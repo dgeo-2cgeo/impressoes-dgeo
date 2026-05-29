@@ -94,7 +94,9 @@ tr:hover td{background:#f8f8fc}
   <button class="tab active" onclick="switchTab('dashboard')">📊 Painel</button>
   <button class="tab" onclick="switchTab('registro')">➕ Lançar Impressão</button>
   <button class="tab" onclick="switchTab('historico')">📋 Histórico</button>
-  <button class="tab" onclick="switchTab('balanco')">📄 Balanço Mensal</button>
+  <button class="tab" onclick="switchTab('balanco')">📅 Balanço Mensal</button>
+  <button class="tab" onclick="switchTab('anual')">📆 Balanço Anual</button>
+  <button class="tab" onclick="switchTab('periodo')">🗓 Período Personalizado</button>
 </div>
 
 <!-- PAINEL -->
@@ -180,40 +182,33 @@ tr:hover td{background:#f8f8fc}
   <div id="tabela-historico"><div class="loading">Carregando registros...</div></div>
 </div>
 
-<!-- BALANÇO -->
+<!-- BALANÇO MENSAL -->
 <div id="tab-balanco" class="pane">
-  <div class="subtabs">
-    <button class="subtab active" onclick="switchSubtab('mensal')">📅 Mensal</button>
-    <button class="subtab" onclick="switchSubtab('anual')">📆 Anual</button>
-    <button class="subtab" onclick="switchSubtab('periodo')">🗓 Período personalizado</button>
-    <button class="btn" onclick="exportarBalanco()" style="margin-left:auto;margin-bottom:4px">⬇ Exportar CSV</button>
+  <div class="sel-row">
+    <span>Ano:</span><select id="bal-ano-m" onchange="renderBalanco()"></select>
+    <span>Mês:</span><select id="bal-mes-m" onchange="renderBalanco()"><option value="">Todos</option></select>
+    <button class="btn" onclick="exportarBalanco('mensal')" style="margin-left:auto">⬇ Exportar CSV</button>
   </div>
+  <div id="balanco-content-mensal"></div>
+</div>
 
-  <!-- Sub-aba Mensal -->
-  <div id="subpane-mensal" class="subpane active">
-    <div class="sel-row">
-      <span>Ano:</span><select id="bal-ano-m" onchange="renderBalanco()"></select>
-      <span>Mês:</span><select id="bal-mes-m" onchange="renderBalanco()"><option value="">Todos</option></select>
-    </div>
-    <div id="balanco-content-mensal"></div>
+<!-- BALANÇO ANUAL -->
+<div id="tab-anual" class="pane">
+  <div class="sel-row">
+    <span>Ano:</span><select id="bal-ano-a" onchange="renderBalancoAnual()"></select>
+    <button class="btn" onclick="exportarBalanco('anual')" style="margin-left:auto">⬇ Exportar CSV</button>
   </div>
+  <div id="balanco-content-anual"></div>
+</div>
 
-  <!-- Sub-aba Anual -->
-  <div id="subpane-anual" class="subpane">
-    <div class="sel-row">
-      <span>Ano:</span><select id="bal-ano-a" onchange="renderBalanco()"></select>
-    </div>
-    <div id="balanco-content-anual"></div>
+<!-- PERÍODO PERSONALIZADO -->
+<div id="tab-periodo" class="pane">
+  <div class="sel-row">
+    <span>De:</span><input type="date" id="bal-de" onchange="renderBalancoPeriodo()">
+    <span>Até:</span><input type="date" id="bal-ate" onchange="renderBalancoPeriodo()">
+    <button class="btn" onclick="exportarBalanco('periodo')" style="margin-left:auto">⬇ Exportar CSV</button>
   </div>
-
-  <!-- Sub-aba Período -->
-  <div id="subpane-periodo" class="subpane">
-    <div class="sel-row">
-      <span>De:</span><input type="date" id="bal-de" onchange="renderBalanco()">
-      <span>Até:</span><input type="date" id="bal-ate" onchange="renderBalanco()">
-    </div>
-    <div id="balanco-content-periodo"></div>
-  </div>
+  <div id="balanco-content-periodo"></div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -309,11 +304,13 @@ window.switchTab = function(name){
   document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+name).classList.add('active');
-  const idx=['dashboard','registro','historico','balanco'].indexOf(name);
+  const idx=['dashboard','registro','historico','balanco','anual','periodo'].indexOf(name);
   document.querySelectorAll('.tab')[idx].classList.add('active');
   if(name==='dashboard') renderDash();
   if(name==='historico') renderHistorico();
   if(name==='balanco') renderBalanco();
+  if(name==='anual') renderBalancoAnual();
+  if(name==='periodo') renderBalancoPeriodo();
 }
 
 function barChart(containerId, data, color='#3c3a8e'){
@@ -445,20 +442,9 @@ function tbl(rows, total){
     <tbody>${rows.map(([k,v])=>`<tr><td>${k||'—'}</td><td style="text-align:right;font-weight:600">${v}</td><td style="text-align:right;color:#aaa">${total?Math.round(v/total*100):0}%</td></tr>`).join('')}</tbody></table>`;
 }
 
-let modoBalanco = 'mensal';
-
-window.switchSubtab = function(modo){
-  modoBalanco = modo;
-  document.querySelectorAll('.subtab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.subpane').forEach(p=>p.classList.remove('active'));
-  document.querySelector(`.subtab[onclick="switchSubtab('${modo}')"]`).classList.add('active');
-  document.getElementById('subpane-'+modo).classList.add('active');
-  renderBalanco();
-}
-
 function popularSelectsBalanco(){
   const anos=[...new Set(dados.map(d=>d.data?.slice(0,4)))].filter(Boolean).sort().reverse();
-  const anoAtual = new Date().getFullYear().toString();
+  const anoAtual=new Date().getFullYear().toString();
   if(!anos.includes(anoAtual)) anos.unshift(anoAtual);
   ['bal-ano-m','bal-ano-a'].forEach(id=>{
     const el=document.getElementById(id);
@@ -511,42 +497,44 @@ function montarBalanco(reg, titulo, ano, mostrarEvolucao){
 
 function renderBalanco(){
   popularSelectsBalanco();
-  if(modoBalanco==='mensal'){
-    const ano=document.getElementById('bal-ano-m').value;
-    const mes=document.getElementById('bal-mes-m').value;
-    const reg=filtrar(ano,mes);
-    const titulo=mes?`${MESES[parseInt(mes)-1]} ${ano}`:`Ano ${ano}`;
-    document.getElementById('balanco-content-mensal').innerHTML=montarBalanco(reg,titulo,ano,!mes);
-  }
-  if(modoBalanco==='anual'){
-    const ano=document.getElementById('bal-ano-a').value;
-    const reg=filtrar(ano,'');
-    document.getElementById('balanco-content-anual').innerHTML=montarBalanco(reg,`Ano ${ano}`,ano,true);
-  }
-  if(modoBalanco==='periodo'){
-    const de=document.getElementById('bal-de').value;
-    const ate=document.getElementById('bal-ate').value;
-    if(!de||!ate){document.getElementById('balanco-content-periodo').innerHTML='<div class="empty">Selecione as datas de início e fim.</div>';return;}
-    const reg=dados.filter(d=>d.data&&d.data>=de&&d.data<=ate);
-    const fmt=d=>d.split('-').reverse().join('/');
-    document.getElementById('balanco-content-periodo').innerHTML=montarBalanco(reg,`${fmt(de)} a ${fmt(ate)}`,null,false);
-  }
+  const ano=document.getElementById('bal-ano-m').value;
+  const mes=document.getElementById('bal-mes-m').value;
+  const reg=filtrar(ano,mes);
+  const titulo=mes?`${MESES[parseInt(mes)-1]} ${ano}`:`Ano ${ano}`;
+  document.getElementById('balanco-content-mensal').innerHTML=montarBalanco(reg,titulo,ano,!mes);
 }
 
-window.exportarBalanco = function(){
+function renderBalancoAnual(){
+  popularSelectsBalanco();
+  const ano=document.getElementById('bal-ano-a').value;
+  const reg=filtrar(ano,'');
+  document.getElementById('balanco-content-anual').innerHTML=montarBalanco(reg,`Ano ${ano}`,ano,true);
+}
+
+function renderBalancoPeriodo(){
+  const de=document.getElementById('bal-de').value;
+  const ate=document.getElementById('bal-ate').value;
+  if(!de||!ate){document.getElementById('balanco-content-periodo').innerHTML='<div class="empty">Selecione as datas de início e fim.</div>';return;}
+  const reg=dados.filter(d=>d.data&&d.data>=de&&d.data<=ate);
+  const fmt=d=>d.split('-').reverse().join('/');
+  document.getElementById('balanco-content-periodo').innerHTML=montarBalanco(reg,`${fmt(de)} a ${fmt(ate)}`,null,false);
+}
+
+window.exportarBalanco = function(modo){
   let reg=[],titulo='';
-  if(modoBalanco==='mensal'){
+  if(modo==='mensal'){
     const ano=document.getElementById('bal-ano-m').value;
     const mes=document.getElementById('bal-mes-m').value;
     reg=filtrar(ano,mes);
     titulo=mes?`${MESES[parseInt(mes)-1]}_${ano}`:`Ano_${ano}`;
-  } else if(modoBalanco==='anual'){
+  } else if(modo==='anual'){
     const ano=document.getElementById('bal-ano-a').value;
     reg=filtrar(ano,'');
     titulo=`Ano_${ano}`;
   } else {
     const de=document.getElementById('bal-de').value;
     const ate=document.getElementById('bal-ate').value;
+    if(!de||!ate){toast('Selecione as datas','#c0392b');return;}
     reg=dados.filter(d=>d.data&&d.data>=de&&d.data<=ate);
     titulo=`${de}_a_${ate}`;
   }
