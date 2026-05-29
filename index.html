@@ -451,8 +451,7 @@ window.switchSubtab = function(modo){
   modoBalanco = modo;
   document.querySelectorAll('.subtab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.subpane').forEach(p=>p.classList.remove('active'));
-  const idx = ['mensal','anual','periodo'].indexOf(modo);
-  document.querySelectorAll('.subtab')[idx].classList.add('active');
+  document.querySelector(`.subtab[onclick="switchSubtab('${modo}')"]`).classList.add('active');
   document.getElementById('subpane-'+modo).classList.add('active');
   renderBalanco();
 }
