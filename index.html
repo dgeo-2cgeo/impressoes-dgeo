@@ -70,6 +70,12 @@ tr:hover td{background:#f8f8fc}
 .status-bar{background:#e8f5e9;color:#2e7d32;padding:8px 16px;font-size:12px;font-weight:600;display:flex;align-items:center;gap:8px}
 .status-bar.erro{background:#fdecea;color:#c62828}
 .status-bar.sincronizando{background:#fff8e1;color:#f57f17}
+.subtabs{display:flex;gap:0;margin-bottom:20px;border-bottom:1px solid #e0e0e8}
+.subtab{padding:8px 20px;cursor:pointer;font-size:13px;color:#666;border-bottom:2px solid transparent;background:none;border-top:none;border-left:none;border-right:none;font-family:inherit;font-weight:500;margin-bottom:-1px}
+.subtab.active{color:#1a1a2e;border-bottom:2px solid #3c3a8e;font-weight:600}
+.subtab:hover{color:#1a1a2e;background:#f8f8fb}
+.subpane{display:none}
+.subpane.active{display:block}
 </style>
 </head>
 <body>
@@ -176,24 +182,38 @@ tr:hover td{background:#f8f8fc}
 
 <!-- BALANÇO -->
 <div id="tab-balanco" class="pane">
-  <div class="sel-row" style="flex-wrap:wrap;gap:10px">
-    <span>Tipo:</span>
-    <select id="bal-modo" onchange="trocarModoBalanco()">
-      <option value="mensal">Mensal</option>
-      <option value="anual">Anual</option>
-      <option value="periodo">Período personalizado</option>
-    </select>
-    <span id="bal-label-ano">Ano:</span>
-    <select id="bal-ano" onchange="renderBalanco()"></select>
-    <span id="bal-label-mes">Mês:</span>
-    <select id="bal-mes" onchange="renderBalanco()"><option value="">Todos</option></select>
-    <span id="bal-label-de" style="display:none">De:</span>
-    <input type="date" id="bal-de" style="display:none" onchange="renderBalanco()">
-    <span id="bal-label-ate" style="display:none">Até:</span>
-    <input type="date" id="bal-ate" style="display:none" onchange="renderBalanco()">
-    <button class="btn" onclick="exportarBalanco()" style="margin-left:auto">⬇ Exportar CSV</button>
+  <div class="subtabs">
+    <button class="subtab active" onclick="switchSubtab('mensal')">📅 Mensal</button>
+    <button class="subtab" onclick="switchSubtab('anual')">📆 Anual</button>
+    <button class="subtab" onclick="switchSubtab('periodo')">🗓 Período personalizado</button>
+    <button class="btn" onclick="exportarBalanco()" style="margin-left:auto;margin-bottom:4px">⬇ Exportar CSV</button>
   </div>
-  <div id="balanco-content"></div>
+
+  <!-- Sub-aba Mensal -->
+  <div id="subpane-mensal" class="subpane active">
+    <div class="sel-row">
+      <span>Ano:</span><select id="bal-ano-m" onchange="renderBalanco()"></select>
+      <span>Mês:</span><select id="bal-mes-m" onchange="renderBalanco()"><option value="">Todos</option></select>
+    </div>
+    <div id="balanco-content-mensal"></div>
+  </div>
+
+  <!-- Sub-aba Anual -->
+  <div id="subpane-anual" class="subpane">
+    <div class="sel-row">
+      <span>Ano:</span><select id="bal-ano-a" onchange="renderBalanco()"></select>
+    </div>
+    <div id="balanco-content-anual"></div>
+  </div>
+
+  <!-- Sub-aba Período -->
+  <div id="subpane-periodo" class="subpane">
+    <div class="sel-row">
+      <span>De:</span><input type="date" id="bal-de" onchange="renderBalanco()">
+      <span>Até:</span><input type="date" id="bal-ate" onchange="renderBalanco()">
+    </div>
+    <div id="balanco-content-periodo"></div>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -425,68 +445,43 @@ function tbl(rows, total){
     <tbody>${rows.map(([k,v])=>`<tr><td>${k||'—'}</td><td style="text-align:right;font-weight:600">${v}</td><td style="text-align:right;color:#aaa">${total?Math.round(v/total*100):0}%</td></tr>`).join('')}</tbody></table>`;
 }
 
-window.trocarModoBalanco = function(){
-  const modo = document.getElementById('bal-modo').value;
-  const showMensal = modo === 'mensal';
-  const showAnual = modo === 'anual';
-  const showPeriodo = modo === 'periodo';
-  document.getElementById('bal-label-ano').style.display = (showMensal||showAnual) ? '' : 'none';
-  document.getElementById('bal-ano').style.display = (showMensal||showAnual) ? '' : 'none';
-  document.getElementById('bal-label-mes').style.display = showMensal ? '' : 'none';
-  document.getElementById('bal-mes').style.display = showMensal ? '' : 'none';
-  document.getElementById('bal-label-de').style.display = showPeriodo ? '' : 'none';
-  document.getElementById('bal-de').style.display = showPeriodo ? '' : 'none';
-  document.getElementById('bal-label-ate').style.display = showPeriodo ? '' : 'none';
-  document.getElementById('bal-ate').style.display = showPeriodo ? '' : 'none';
+let modoBalanco = 'mensal';
+
+window.switchSubtab = function(modo){
+  modoBalanco = modo;
+  document.querySelectorAll('.subtab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.subpane').forEach(p=>p.classList.remove('active'));
+  const idx = ['mensal','anual','periodo'].indexOf(modo);
+  document.querySelectorAll('.subtab')[idx].classList.add('active');
+  document.getElementById('subpane-'+modo).classList.add('active');
   renderBalanco();
 }
 
-function filtrarBalanco(){
-  const modo = document.getElementById('bal-modo').value;
-  if(modo === 'periodo'){
-    const de = document.getElementById('bal-de').value;
-    const ate = document.getElementById('bal-ate').value;
-    if(!de || !ate) return [];
-    return dados.filter(d=>d.data && d.data >= de && d.data <= ate);
+function popularSelectsBalanco(){
+  const anos=[...new Set(dados.map(d=>d.data?.slice(0,4)))].filter(Boolean).sort().reverse();
+  const anoAtual = new Date().getFullYear().toString();
+  if(!anos.includes(anoAtual)) anos.unshift(anoAtual);
+  ['bal-ano-m','bal-ano-a'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    const val=el.value||anoAtual;
+    el.innerHTML=anos.map(a=>`<option value="${a}">${a}</option>`).join('');
+    el.value=val;
+  });
+  const elMes=document.getElementById('bal-mes-m');
+  if(elMes){
+    const val=elMes.value||'';
+    elMes.innerHTML='<option value="">Todos</option>'+MESES.map((m,i)=>`<option value="${i+1}">${m}</option>`).join('');
+    elMes.value=val;
   }
-  const ano = document.getElementById('bal-ano').value;
-  const mes = modo === 'mensal' ? document.getElementById('bal-mes').value : '';
-  return filtrar(ano, mes);
 }
 
-function tituloBalanco(){
-  const modo = document.getElementById('bal-modo').value;
-  const ano = document.getElementById('bal-ano').value;
-  if(modo === 'periodo'){
-    const de = document.getElementById('bal-de').value;
-    const ate = document.getElementById('bal-ate').value;
-    if(!de||!ate) return 'Período não selecionado';
-    const fmt = d => d.split('-').reverse().join('/');
-    return `${fmt(de)} a ${fmt(ate)}`;
-  }
-  if(modo === 'anual') return `Ano ${ano}`;
-  const mes = document.getElementById('bal-mes').value;
-  return mes ? `${MESES[parseInt(mes)-1]} ${ano}` : `Ano ${ano}`;
-}
-
-function renderBalanco(){
-  popularSelects();
-  const modo = document.getElementById('bal-modo').value;
-  const reg = filtrarBalanco();
-  const total = reg.reduce((s,d)=>s+(d.qtd||0),0);
-  const pit = reg.filter(d=>d.projeto==='PIT').reduce((s,d)=>s+(d.qtd||0),0);
+function montarBalanco(reg, titulo, ano, mostrarEvolucao){
+  const total=reg.reduce((s,d)=>s+(d.qtd||0),0);
+  const pit=reg.filter(d=>d.projeto==='PIT').reduce((s,d)=>s+(d.qtd||0),0);
   const agg=(campo)=>{const m={};reg.forEach(d=>{const k=d[campo]||'—';m[k]=(m[k]||0)+(d.qtd||0);});return Object.entries(m).sort((a,b)=>b[1]-a[1]);};
   const aggTam=()=>{const m={};reg.forEach(d=>{const k=d.tamCustom||d.tamanho||'—';m[k]=(m[k]||0)+(d.qtd||0);});return Object.entries(m).sort((a,b)=>b[1]-a[1]);};
-  const titulo = tituloBalanco();
-  const ano = document.getElementById('bal-ano').value;
-  const showMensal = modo === 'mensal';
-  const showAnual = modo === 'anual';
-
-  // Tabela de evolução mensal (para modo mensal sem mês selecionado, ou modo anual)
-  const mes = showMensal ? document.getElementById('bal-mes').value : '';
-  const mostrarEvolucao = (showAnual) || (showMensal && !mes);
-
-  document.getElementById('balanco-content').innerHTML=`
+  return `
     <div style="font-size:16px;font-weight:700;margin-bottom:16px">Balanço: ${titulo}</div>
     <div class="stat-grid">
       <div class="stat"><div class="stat-label">Total geral</div><div class="stat-value">${total.toLocaleString('pt-BR')}</div></div>
@@ -503,7 +498,7 @@ function renderBalanco(){
       <div class="summary-table"><div class="summary-header">Por seção</div>${tbl(agg('secao'),total)}</div>
     </div>
     <div class="summary-table"><div class="summary-header">Por solicitante</div>${tbl(agg('solicitante'),total)}</div>
-    ${mostrarEvolucao ? `<div class="summary-table" style="margin-top:14px"><div class="summary-header">Evolução mensal — ${ano}</div>
+    ${mostrarEvolucao&&ano?`<div class="summary-table" style="margin-top:14px"><div class="summary-header">Evolução mensal — ${ano}</div>
       <table><thead><tr><th>Mês</th><th style="text-align:right">Total</th><th style="text-align:right">PIT</th><th style="text-align:right">Extra PIT</th><th style="text-align:right">Registros</th></tr></thead>
       <tbody>${MESES.map((m,i)=>{
         const mr=filtrar(ano,i+1);
@@ -511,16 +506,54 @@ function renderBalanco(){
         const mp=mr.filter(d=>d.projeto==='PIT').reduce((s,d)=>s+(d.qtd||0),0);
         return`<tr><td><strong>${m}</strong></td><td style="text-align:right;font-weight:600">${mt||0}</td><td style="text-align:right">${mp||0}</td><td style="text-align:right">${mt-mp||0}</td><td style="text-align:right;color:#aaa">${mr.length||0}</td></tr>`;
       }).join('')}
-      <tr style="background:#f8f8fc"><td><strong>TOTAL</strong></td><td style="text-align:right;font-weight:700">${total}</td><td style="text-align:right;font-weight:700">${pit}</td><td style="text-align:right;font-weight:700">${total-pit}</td><td style="text-align:right;color:#aaa">${reg.length}</td></tr>
-      </tbody></table></div>` : ''}`;
+      <tr style="background:#f0f0f8"><td><strong>TOTAL</strong></td><td style="text-align:right;font-weight:700">${total}</td><td style="text-align:right;font-weight:700">${pit}</td><td style="text-align:right;font-weight:700">${total-pit}</td><td style="text-align:right;color:#aaa">${reg.length}</td></tr>
+      </tbody></table></div>`:''}`;
+}
+
+function renderBalanco(){
+  popularSelectsBalanco();
+  if(modoBalanco==='mensal'){
+    const ano=document.getElementById('bal-ano-m').value;
+    const mes=document.getElementById('bal-mes-m').value;
+    const reg=filtrar(ano,mes);
+    const titulo=mes?`${MESES[parseInt(mes)-1]} ${ano}`:`Ano ${ano}`;
+    document.getElementById('balanco-content-mensal').innerHTML=montarBalanco(reg,titulo,ano,!mes);
+  }
+  if(modoBalanco==='anual'){
+    const ano=document.getElementById('bal-ano-a').value;
+    const reg=filtrar(ano,'');
+    document.getElementById('balanco-content-anual').innerHTML=montarBalanco(reg,`Ano ${ano}`,ano,true);
+  }
+  if(modoBalanco==='periodo'){
+    const de=document.getElementById('bal-de').value;
+    const ate=document.getElementById('bal-ate').value;
+    if(!de||!ate){document.getElementById('balanco-content-periodo').innerHTML='<div class="empty">Selecione as datas de início e fim.</div>';return;}
+    const reg=dados.filter(d=>d.data&&d.data>=de&&d.data<=ate);
+    const fmt=d=>d.split('-').reverse().join('/');
+    document.getElementById('balanco-content-periodo').innerHTML=montarBalanco(reg,`${fmt(de)} a ${fmt(ate)}`,null,false);
+  }
 }
 
 window.exportarBalanco = function(){
-  const reg = filtrarBalanco();
-  const titulo = tituloBalanco();
+  let reg=[],titulo='';
+  if(modoBalanco==='mensal'){
+    const ano=document.getElementById('bal-ano-m').value;
+    const mes=document.getElementById('bal-mes-m').value;
+    reg=filtrar(ano,mes);
+    titulo=mes?`${MESES[parseInt(mes)-1]}_${ano}`:`Ano_${ano}`;
+  } else if(modoBalanco==='anual'){
+    const ano=document.getElementById('bal-ano-a').value;
+    reg=filtrar(ano,'');
+    titulo=`Ano_${ano}`;
+  } else {
+    const de=document.getElementById('bal-de').value;
+    const ate=document.getElementById('bal-ate').value;
+    reg=dados.filter(d=>d.data&&d.data>=de&&d.data<=ate);
+    titulo=`${de}_a_${ate}`;
+  }
   const total=reg.reduce((s,d)=>s+(d.qtd||0),0);
   const pit=reg.filter(d=>d.projeto==='PIT').reduce((s,d)=>s+(d.qtd||0),0);
-  let csv=`BALANÇO DE IMPRESSÕES — DGEO\nPeríodo:;${titulo}\nGerado em:;${new Date().toLocaleString('pt-BR')}\n\n`;
+  let csv=`BALANÇO DE IMPRESSÕES — DGEO\nPeríodo:;${titulo.replace(/_/g,' ')}\nGerado em:;${new Date().toLocaleString('pt-BR')}\n\n`;
   csv+=`RESUMO\nTotal Geral;${total}\nPIT;${pit}\nExtra PIT;${total-pit}\nRegistros;${reg.length}\n\n`;
   csv+=`REGISTROS DETALHADOS\nData;Nome;MI;Escala;Tipo;Solicitante;Responsável;Seção;Qtd;Tamanho;Projeto;Papel;Finalidade\n`;
   reg.slice().sort((a,b)=>a.data.localeCompare(b.data)).forEach(d=>{
@@ -529,9 +562,8 @@ window.exportarBalanco = function(){
   const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');
-  a.href=url;
-  a.download=`balanco_impressoes_${titulo.replace(/\//g,'-').replace(/ /g,'_')}.csv`;
-  a.click();URL.revokeObjectURL(url);
+  a.href=url; a.download=`balanco_${titulo}.csv`;
+  a.click(); URL.revokeObjectURL(url);
   toast('✔ Balanço exportado!','#0a6b4a');
 }
 
