@@ -24,6 +24,7 @@ header span{font-size:12px;opacity:0.5;margin-left:auto}
 .btn{padding:9px 20px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;border:1px solid #dde;background:#fff;color:#1a1a2e;font-family:inherit}
 .btn-primary{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
 .btn-danger{color:#c0392b;border-color:#e8c0be;padding:4px 10px;font-size:11px}
+.btn-edit{color:#1a6b9a;border-color:#b0d4e8;padding:4px 10px;font-size:11px}
 .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
 .stat{background:#fff;border-radius:8px;padding:14px 16px;border:1px solid #e8e8f0}
 .stat-label{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px}
@@ -63,9 +64,15 @@ tr:hover td{background:#f8f8fc}
 .toast{position:fixed;bottom:24px;right:24px;background:#1a1a2e;color:#fff;padding:11px 20px;border-radius:8px;font-size:13px;opacity:0;transition:opacity 0.3s;pointer-events:none;z-index:999}
 .table-wrap{overflow-x:auto;border-radius:10px;border:1px solid #e8e8f0}
 .loading{padding:40px;text-align:center;color:#888;font-size:13px}
-.status-bar{background:#e8f5e9;color:#2e7d32;padding:8px 16px;font-size:12px;font-weight:600;display:flex;align-items:center;gap:8px}
+.status-bar{background:#e8f5e9;color:#2e7d32;padding:8px 16px;font-size:12px;font-weight:600}
 .status-bar.erro{background:#fdecea;color:#c62828}
 .status-bar.sync{background:#fff8e1;color:#f57f17}
+/* Modal de edição */
+.modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center}
+.modal-overlay.active{display:flex}
+.modal{background:#fff;border-radius:12px;padding:24px;width:90%;max-width:700px;max-height:90vh;overflow-y:auto}
+.modal-title{font-size:16px;font-weight:700;margin-bottom:20px;color:#1a1a2e}
+.modal-btns{display:flex;gap:10px;margin-top:20px}
 </style>
 </head>
 <body>
@@ -89,8 +96,8 @@ tr:hover td{background:#f8f8fc}
 <!-- PAINEL -->
 <div id="tab-dashboard" class="pane active">
   <div class="sel-row">
-    <span>Ano:</span><select id="dash-ano" onchange="renderDash()"></select>
-    <span>Mês:</span><select id="dash-mes" onchange="renderDash()"><option value="">Todos</option></select>
+    <span>Ano:</span><select id="dash-ano" onchange="window.renderDash()"></select>
+    <span>Mês:</span><select id="dash-mes" onchange="window.renderDash()"><option value="">Todos</option></select>
   </div>
   <div class="stat-grid" id="stats"><div class="loading">Carregando...</div></div>
   <div class="charts-row">
@@ -141,19 +148,19 @@ tr:hover td{background:#f8f8fc}
     </div>
   </div>
   <div style="display:flex;gap:10px">
-    <button class="btn btn-primary" onclick="salvarImpressao()">✔ Salvar impressão</button>
-    <button class="btn" onclick="limparForm()">Limpar</button>
+    <button class="btn btn-primary" onclick="window.salvarImpressao()">✔ Salvar impressão</button>
+    <button class="btn" onclick="window.limparForm()">Limpar</button>
   </div>
 </div>
 
 <!-- HISTÓRICO -->
 <div id="tab-historico" class="pane">
   <div class="filter-row">
-    <select id="hist-ano" onchange="renderHistorico()"></select>
-    <select id="hist-mes" onchange="renderHistorico()"><option value="">Todos os meses</option></select>
-    <select id="hist-tipo" onchange="renderHistorico()"><option value="">Todos os tipos</option></select>
-    <select id="hist-projeto" onchange="renderHistorico()"><option value="">PIT + Extra PIT</option><option>PIT</option><option>EXTRA PIT</option></select>
-    <input type="text" id="hist-busca" placeholder="🔍 Buscar nome, MI, solicitante..." oninput="renderHistorico()" style="flex:1;min-width:180px">
+    <select id="hist-ano" onchange="window.renderHistorico()"></select>
+    <select id="hist-mes" onchange="window.renderHistorico()"><option value="">Todos os meses</option></select>
+    <select id="hist-tipo" onchange="window.renderHistorico()"><option value="">Todos os tipos</option></select>
+    <select id="hist-projeto" onchange="window.renderHistorico()"><option value="">PIT + Extra PIT</option><option>PIT</option><option>EXTRA PIT</option></select>
+    <input type="text" id="hist-busca" placeholder="🔍 Buscar nome, MI, solicitante..." oninput="window.renderHistorico()" style="flex:1;min-width:180px">
   </div>
   <div id="tabela-historico"><div class="loading">Carregando registros...</div></div>
 </div>
@@ -161,9 +168,9 @@ tr:hover td{background:#f8f8fc}
 <!-- BALANÇO MENSAL -->
 <div id="tab-balanco" class="pane">
   <div class="sel-row">
-    <span>Ano:</span><select id="bal-ano-m" onchange="renderBalancoMensal()"></select>
-    <span>Mês:</span><select id="bal-mes-m" onchange="renderBalancoMensal()"><option value="">Todos</option></select>
-    <button class="btn" onclick="exportarCSV('mensal')" style="margin-left:auto">⬇ Exportar CSV</button>
+    <span>Ano:</span><select id="bal-ano-m" onchange="window.renderBalancoMensal()"></select>
+    <span>Mês:</span><select id="bal-mes-m" onchange="window.renderBalancoMensal()"><option value="">Todos</option></select>
+    <button class="btn" onclick="window.exportarCSV('mensal')" style="margin-left:auto">⬇ Exportar CSV</button>
   </div>
   <div id="balanco-content-mensal"></div>
 </div>
@@ -171,8 +178,8 @@ tr:hover td{background:#f8f8fc}
 <!-- BALANÇO ANUAL -->
 <div id="tab-anual" class="pane">
   <div class="sel-row">
-    <span>Ano:</span><select id="bal-ano-a" onchange="renderBalancoAnual()"></select>
-    <button class="btn" onclick="exportarCSV('anual')" style="margin-left:auto">⬇ Exportar CSV</button>
+    <span>Ano:</span><select id="bal-ano-a" onchange="window.renderBalancoAnual()"></select>
+    <button class="btn" onclick="window.exportarCSV('anual')" style="margin-left:auto">⬇ Exportar CSV</button>
   </div>
   <div id="balanco-content-anual"></div>
 </div>
@@ -180,18 +187,57 @@ tr:hover td{background:#f8f8fc}
 <!-- PERÍODO PERSONALIZADO -->
 <div id="tab-periodo" class="pane">
   <div class="sel-row">
-    <span>De:</span><input type="date" id="bal-de" onchange="renderBalancoPeriodo()">
-    <span>Até:</span><input type="date" id="bal-ate" onchange="renderBalancoPeriodo()">
-    <button class="btn" onclick="exportarCSV('periodo')" style="margin-left:auto">⬇ Exportar CSV</button>
+    <span>De:</span><input type="date" id="bal-de" onchange="window.renderBalancoPeriodo()">
+    <span>Até:</span><input type="date" id="bal-ate" onchange="window.renderBalancoPeriodo()">
+    <button class="btn" onclick="window.exportarCSV('periodo')" style="margin-left:auto">⬇ Exportar CSV</button>
   </div>
   <div id="balanco-content-periodo"></div>
+</div>
+
+<!-- MODAL EDIÇÃO -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-title">✏️ Editar Impressão</div>
+    <div class="form-grid">
+      <div class="form-group"><label>Data *</label><input type="date" id="e-data"></div>
+      <div class="form-group"><label>Nome / Descrição</label><input type="text" id="e-nome"></div>
+      <div class="form-group"><label>MI</label><input type="text" id="e-mi"></div>
+      <div class="form-group"><label>Escala</label>
+        <select id="e-escala"><option>1/25.000</option><option>1/50.000</option><option>1/100.000</option><option>SEM ESCALA</option><option>ESPECIAL</option></select>
+      </div>
+      <div class="form-group"><label>Tipo de produto</label>
+        <select id="e-tipo"><option>CARTA TOPO</option><option>CARTA ORTO</option><option>MAPA TEMÁTICO</option><option>BANNER</option><option>MOSAICO</option><option>ANAGLIFO</option><option>OUTROS</option></select>
+      </div>
+      <div class="form-group"><label>Solicitante</label><input type="text" id="e-solicitante"></div>
+      <div class="form-group"><label>Responsável</label><input type="text" id="e-responsavel"></div>
+      <div class="form-group"><label>Seção</label><input type="text" id="e-secao"></div>
+      <div class="form-group"><label>Quantidade *</label><input type="number" id="e-qtd" min="1"></div>
+      <div class="form-group"><label>Tamanho</label>
+        <select id="e-tamanho"><option>A0</option><option>A1</option><option>A2</option><option>A3</option><option>A4</option><option>Outro</option></select>
+      </div>
+      <div class="form-group"><label>Tamanho personalizado</label><input type="text" id="e-tam-custom"></div>
+      <div class="form-group"><label>Projeto</label>
+        <select id="e-projeto"><option>PIT</option><option>EXTRA PIT</option></select>
+      </div>
+      <div class="form-group"><label>Tipo de papel</label>
+        <select id="e-papel"><option>COMUM</option><option>FOTOGRÁFICO</option><option>ADESIVO</option><option>TECIDO</option><option>VEGETAL</option></select>
+      </div>
+    </div>
+    <div class="form-group" style="margin-top:4px"><label>Finalidade</label>
+      <textarea id="e-finalidade"></textarea>
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-primary" onclick="window.salvarEdicao()">✔ Salvar alterações</button>
+      <button class="btn" onclick="window.fecharModal()">Cancelar</button>
+    </div>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
-import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, deleteDoc, updateDoc, doc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDi5NThOd0IHWHoSVx6PsFZgo9UhF-dCi4",
@@ -208,74 +254,63 @@ const col = collection(db, "impressoes");
 const MESES = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 let dados = [];
 let abaAtiva = 'dashboard';
+let editandoId = null;
 
 function setStatus(msg, tipo='ok'){
   const el = document.getElementById('status-bar');
   el.textContent = msg;
   el.className = 'status-bar' + (tipo!='ok' ? ' '+tipo : '');
 }
-
 function toast(msg, cor='#1a1a2e'){
   const t = document.getElementById('toast');
   t.textContent = msg; t.style.background = cor; t.style.opacity = 1;
   setTimeout(()=>{ t.style.opacity = 0; }, 2200);
 }
 
-const q = query(col, orderBy("data","desc"));
-onSnapshot(q, snap => {
+onSnapshot(query(col, orderBy("data","desc")), snap => {
   dados = snap.docs.map(d => ({id: d.id, ...d.data()}));
   setStatus('✅ Conectado — dados sincronizados em tempo real');
-  popularSelects();
   const total = dados.reduce((s,d)=>s+(d.qtd||0),0);
   document.getElementById('header-total').textContent = total ? `${total.toLocaleString('pt-BR')} impressões` : '';
+  popularSelects();
   if(abaAtiva==='dashboard') renderDash();
   if(abaAtiva==='historico') renderHistorico();
   if(abaAtiva==='balanco') renderBalancoMensal();
   if(abaAtiva==='anual') renderBalancoAnual();
   if(abaAtiva==='periodo') renderBalancoPeriodo();
-}, err => { setStatus('❌ Erro de conexão','erro'); });
+}, ()=> setStatus('❌ Erro de conexão','erro'));
 
 function popularSelects(){
   const anoAtual = new Date().getFullYear().toString();
   const anos = [...new Set(dados.map(d=>d.data?.slice(0,4)))].filter(Boolean).sort().reverse();
   if(!anos.includes(anoAtual)) anos.unshift(anoAtual);
-  ['dash-ano','hist-ano','bal-ano-m','bal-ano-a'].forEach(id => {
-    const el = document.getElementById(id);
-    if(!el) return;
-    const val = el.value || anoAtual;
-    el.innerHTML = anos.map(a=>`<option value="${a}">${a}</option>`).join('');
-    el.value = val;
+  ['dash-ano','hist-ano','bal-ano-m','bal-ano-a'].forEach(id=>{
+    const el=document.getElementById(id); if(!el) return;
+    const val=el.value||anoAtual;
+    el.innerHTML=anos.map(a=>`<option value="${a}">${a}</option>`).join('');
+    el.value=val;
   });
-  ['dash-mes','hist-mes','bal-mes-m'].forEach(id => {
-    const el = document.getElementById(id);
-    if(!el) return;
-    const val = el.value || '';
-    const base = id==='hist-mes' ? '<option value="">Todos os meses</option>' : '<option value="">Todos</option>';
-    el.innerHTML = base + MESES.map((m,i)=>`<option value="${i+1}">${m}</option>`).join('');
-    el.value = val;
+  ['dash-mes','hist-mes','bal-mes-m'].forEach(id=>{
+    const el=document.getElementById(id); if(!el) return;
+    const val=el.value||'';
+    const base=id==='hist-mes'?'<option value="">Todos os meses</option>':'<option value="">Todos</option>';
+    el.innerHTML=base+MESES.map((m,i)=>`<option value="${i+1}">${m}</option>`).join('');
+    el.value=val;
   });
-  const ht = document.getElementById('hist-tipo');
-  if(ht){
-    const val = ht.value;
-    const tipos = [...new Set(dados.map(d=>d.tipo))].filter(Boolean).sort();
-    ht.innerHTML = '<option value="">Todos os tipos</option>' + tipos.map(t=>`<option>${t}</option>`).join('');
-    ht.value = val;
-  }
+  const ht=document.getElementById('hist-tipo');
+  if(ht){ const val=ht.value; const tipos=[...new Set(dados.map(d=>d.tipo))].filter(Boolean).sort(); ht.innerHTML='<option value="">Todos os tipos</option>'+tipos.map(t=>`<option>${t}</option>`).join(''); ht.value=val; }
 }
 
-function filtrar(ano, mes){
-  return dados.filter(d => {
-    if(!d.data) return false;
-    return (!ano || d.data.slice(0,4)===ano) && (!mes || parseInt(d.data.slice(5,7))===parseInt(mes));
-  });
+function filtrar(ano,mes){
+  return dados.filter(d=>{ if(!d.data) return false; return (!ano||d.data.slice(0,4)===ano)&&(!mes||parseInt(d.data.slice(5,7))===parseInt(mes)); });
 }
 
 window.switchTab = function(name){
-  abaAtiva = name;
+  abaAtiva=name;
   document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+name).classList.add('active');
-  const idx = ['dashboard','registro','historico','balanco','anual','periodo'].indexOf(name);
+  const idx=['dashboard','registro','historico','balanco','anual','periodo'].indexOf(name);
   document.querySelectorAll('.tab')[idx].classList.add('active');
   if(name==='dashboard') renderDash();
   if(name==='historico') renderHistorico();
@@ -284,73 +319,52 @@ window.switchTab = function(name){
   if(name==='periodo') renderBalancoPeriodo();
 }
 
-function barChart(id, data, color){
-  const el = document.getElementById(id);
-  if(!data.length){ el.innerHTML='<div class="empty">Sem dados para o período</div>'; return; }
-  const max = Math.max(...data.map(d=>d.v));
-  el.innerHTML = data.map(d=>`<div class="bar-row">
-    <span class="bar-label" title="${d.k}">${d.k}</span>
-    <div class="bar-wrap"><div class="bar-fill" style="width:${max?Math.max(3,Math.round(d.v/max*100)):3}%;background:${color}"></div></div>
-    <span class="bar-val">${d.v}</span></div>`).join('');
+function barChart(id,data,color){
+  const el=document.getElementById(id);
+  if(!data.length){el.innerHTML='<div class="empty">Sem dados para o período</div>';return;}
+  const max=Math.max(...data.map(d=>d.v));
+  el.innerHTML=data.map(d=>`<div class="bar-row"><span class="bar-label" title="${d.k}">${d.k}</span><div class="bar-wrap"><div class="bar-fill" style="width:${max?Math.max(3,Math.round(d.v/max*100)):3}%;background:${color}"></div></div><span class="bar-val">${d.v}</span></div>`).join('');
 }
 
 function renderDash(){
   popularSelects();
-  const ano = document.getElementById('dash-ano').value;
-  const mes = document.getElementById('dash-mes').value;
-  const reg = filtrar(ano, mes);
-  const total = reg.reduce((s,d)=>s+(d.qtd||0),0);
-  const pit = reg.filter(d=>d.projeto==='PIT').reduce((s,d)=>s+(d.qtd||0),0);
-  const extra = total - pit;
-  const tipos = {}; reg.forEach(d=>{ tipos[d.tipo]=(tipos[d.tipo]||0)+(d.qtd||0); });
-  const dom = Object.entries(tipos).sort((a,b)=>b[1]-a[1])[0];
-  document.getElementById('stats').innerHTML = `
+  const ano=document.getElementById('dash-ano').value;
+  const mes=document.getElementById('dash-mes').value;
+  const reg=filtrar(ano,mes);
+  const total=reg.reduce((s,d)=>s+(d.qtd||0),0);
+  const pit=reg.filter(d=>d.projeto==='PIT').reduce((s,d)=>s+(d.qtd||0),0);
+  const extra=total-pit;
+  const tipos={}; reg.forEach(d=>{tipos[d.tipo]=(tipos[d.tipo]||0)+(d.qtd||0);});
+  const dom=Object.entries(tipos).sort((a,b)=>b[1]-a[1])[0];
+  document.getElementById('stats').innerHTML=`
     <div class="stat"><div class="stat-label">Total impressões</div><div class="stat-value">${total.toLocaleString('pt-BR')}</div><div class="stat-sub">${reg.length} registros</div></div>
     <div class="stat"><div class="stat-label">PIT</div><div class="stat-value">${pit.toLocaleString('pt-BR')}</div><div class="stat-sub">${total?Math.round(pit/total*100):0}% do total</div></div>
     <div class="stat"><div class="stat-label">Extra PIT</div><div class="stat-value">${extra.toLocaleString('pt-BR')}</div><div class="stat-sub">${total?Math.round(extra/total*100):0}% do total</div></div>
     <div class="stat"><div class="stat-label">Tipo principal</div><div class="stat-value" style="font-size:14px">${dom?dom[0]:'—'}</div><div class="stat-sub">${dom?dom[1]+' unidades':'sem dados'}</div></div>`;
-  barChart('chart-tipo', Object.entries(tipos).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([k,v])=>({k,v})), '#3c3a8e');
-  const papel={}; reg.forEach(d=>{ papel[d.papel]=(papel[d.papel]||0)+(d.qtd||0); });
-  barChart('chart-papel', Object.entries(papel).sort((a,b)=>b[1]-a[1]).map(([k,v])=>({k,v})), '#0a6b4a');
-  const tam={}; reg.forEach(d=>{ const t=d.tamCustom||d.tamanho; tam[t]=(tam[t]||0)+(d.qtd||0); });
-  barChart('chart-tam', Object.entries(tam).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([k,v])=>({k,v})), '#a05a00');
-  const porMes = Array(12).fill(0);
-  filtrar(ano,'').forEach(d=>{ porMes[parseInt(d.data.slice(5,7))-1]+=(d.qtd||0); });
-  const mmax = Math.max(...porMes,1);
-  document.getElementById('chart-mensal').innerHTML = `<div class="monthly-bars">${MESES.map((m,i)=>{
-    const h = Math.max(2,Math.round(porMes[i]/mmax*100));
-    return `<div class="m-bar-wrap"><span class="m-val">${porMes[i]||''}</span><div class="m-bar" style="height:${h}px"></div><span class="m-label">${m.slice(0,3)}</span></div>`;
-  }).join('')}</div>`;
-  document.getElementById('chart-pit').innerHTML = `
+  barChart('chart-tipo',Object.entries(tipos).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([k,v])=>({k,v})),'#3c3a8e');
+  const papel={}; reg.forEach(d=>{papel[d.papel]=(papel[d.papel]||0)+(d.qtd||0);});
+  barChart('chart-papel',Object.entries(papel).sort((a,b)=>b[1]-a[1]).map(([k,v])=>({k,v})),'#0a6b4a');
+  const tam={}; reg.forEach(d=>{const t=d.tamCustom||d.tamanho;tam[t]=(tam[t]||0)+(d.qtd||0);});
+  barChart('chart-tam',Object.entries(tam).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([k,v])=>({k,v})),'#a05a00');
+  const porMes=Array(12).fill(0);
+  filtrar(ano,'').forEach(d=>{porMes[parseInt(d.data.slice(5,7))-1]+=(d.qtd||0);});
+  const mmax=Math.max(...porMes,1);
+  document.getElementById('chart-mensal').innerHTML=`<div class="monthly-bars">${MESES.map((m,i)=>{const h=Math.max(2,Math.round(porMes[i]/mmax*100));return`<div class="m-bar-wrap"><span class="m-val">${porMes[i]||''}</span><div class="m-bar" style="height:${h}px"></div><span class="m-label">${m.slice(0,3)}</span></div>`;}).join('')}</div>`;
+  document.getElementById('chart-pit').innerHTML=`
     <div class="bar-row"><span class="bar-label">PIT</span><div class="bar-wrap"><div class="bar-fill" style="width:${total?Math.max(3,Math.round(pit/total*100)):3}%;background:#3c3a8e"></div></div><span class="bar-val">${pit}</span></div>
     <div class="bar-row"><span class="bar-label">Extra PIT</span><div class="bar-wrap"><div class="bar-fill" style="width:${total?Math.max(3,Math.round(extra/total*100)):3}%;background:#0a6b4a"></div></div><span class="bar-val">${extra}</span></div>`;
 }
+window.renderDash = renderDash;
 
 window.salvarImpressao = async function(){
-  const data = document.getElementById('f-data').value;
-  if(!data){ toast('⚠ Informe a data','#c0392b'); return; }
-  const qtd = parseInt(document.getElementById('f-qtd').value)||0;
-  if(!qtd){ toast('⚠ Informe a quantidade','#c0392b'); return; }
-  setStatus('⏳ Salvando...','sync');
-  try {
-    await addDoc(col, {
-      data, nome: document.getElementById('f-nome').value,
-      mi: document.getElementById('f-mi').value,
-      escala: document.getElementById('f-escala').value,
-      tipo: document.getElementById('f-tipo').value,
-      solicitante: document.getElementById('f-solicitante').value,
-      responsavel: document.getElementById('f-responsavel').value,
-      secao: document.getElementById('f-secao').value,
-      qtd, tamanho: document.getElementById('f-tamanho').value,
-      tamCustom: document.getElementById('f-tam-custom').value,
-      projeto: document.getElementById('f-projeto').value,
-      papel: document.getElementById('f-papel').value,
-      finalidade: document.getElementById('f-finalidade').value,
-      criadoEm: new Date().toISOString()
-    });
-    toast('✔ Impressão salva na nuvem!','#0a6b4a');
-    limparForm();
-  } catch(e){ toast('❌ Erro ao salvar','#c0392b'); }
+  const data=document.getElementById('f-data').value;
+  if(!data){toast('⚠ Informe a data','#c0392b');return;}
+  const qtd=parseInt(document.getElementById('f-qtd').value)||0;
+  if(!qtd){toast('⚠ Informe a quantidade','#c0392b');return;}
+  try{
+    await addDoc(col,{data,nome:document.getElementById('f-nome').value,mi:document.getElementById('f-mi').value,escala:document.getElementById('f-escala').value,tipo:document.getElementById('f-tipo').value,solicitante:document.getElementById('f-solicitante').value,responsavel:document.getElementById('f-responsavel').value,secao:document.getElementById('f-secao').value,qtd,tamanho:document.getElementById('f-tamanho').value,tamCustom:document.getElementById('f-tam-custom').value,projeto:document.getElementById('f-projeto').value,papel:document.getElementById('f-papel').value,finalidade:document.getElementById('f-finalidade').value,criadoEm:new Date().toISOString()});
+    toast('✔ Impressão salva!','#0a6b4a'); window.limparForm();
+  }catch(e){toast('❌ Erro ao salvar','#c0392b');}
 }
 
 window.limparForm = function(){
@@ -361,53 +375,94 @@ window.limparForm = function(){
 
 window.deletar = async function(id){
   if(!confirm('Remover este registro?')) return;
-  try { await deleteDoc(doc(db,'impressoes',id)); toast('Registro removido'); }
-  catch(e){ toast('❌ Erro ao remover','#c0392b'); }
+  try{await deleteDoc(doc(db,'impressoes',id));toast('Registro removido');}
+  catch(e){toast('❌ Erro ao remover','#c0392b');}
+}
+
+window.abrirEdicao = function(id){
+  const d = dados.find(x=>x.id===id);
+  if(!d) return;
+  editandoId = id;
+  document.getElementById('e-data').value=d.data||'';
+  document.getElementById('e-nome').value=d.nome||'';
+  document.getElementById('e-mi').value=d.mi||'';
+  document.getElementById('e-escala').value=d.escala||'1/25.000';
+  document.getElementById('e-tipo').value=d.tipo||'CARTA TOPO';
+  document.getElementById('e-solicitante').value=d.solicitante||'';
+  document.getElementById('e-responsavel').value=d.responsavel||'';
+  document.getElementById('e-secao').value=d.secao||'';
+  document.getElementById('e-qtd').value=d.qtd||1;
+  document.getElementById('e-tamanho').value=d.tamanho||'A0';
+  document.getElementById('e-tam-custom').value=d.tamCustom||'';
+  document.getElementById('e-projeto').value=d.projeto||'PIT';
+  document.getElementById('e-papel').value=d.papel||'COMUM';
+  document.getElementById('e-finalidade').value=d.finalidade||'';
+  document.getElementById('modal-overlay').classList.add('active');
+}
+
+window.fecharModal = function(){
+  document.getElementById('modal-overlay').classList.remove('active');
+  editandoId = null;
+}
+
+window.salvarEdicao = async function(){
+  if(!editandoId) return;
+  const data=document.getElementById('e-data').value;
+  if(!data){toast('⚠ Informe a data','#c0392b');return;}
+  const qtd=parseInt(document.getElementById('e-qtd').value)||0;
+  if(!qtd){toast('⚠ Informe a quantidade','#c0392b');return;}
+  try{
+    await updateDoc(doc(db,'impressoes',editandoId),{data,nome:document.getElementById('e-nome').value,mi:document.getElementById('e-mi').value,escala:document.getElementById('e-escala').value,tipo:document.getElementById('e-tipo').value,solicitante:document.getElementById('e-solicitante').value,responsavel:document.getElementById('e-responsavel').value,secao:document.getElementById('e-secao').value,qtd,tamanho:document.getElementById('e-tamanho').value,tamCustom:document.getElementById('e-tam-custom').value,projeto:document.getElementById('e-projeto').value,papel:document.getElementById('e-papel').value,finalidade:document.getElementById('e-finalidade').value});
+    toast('✔ Registro atualizado!','#0a6b4a');
+    window.fecharModal();
+  }catch(e){toast('❌ Erro ao salvar','#c0392b');}
 }
 
 function renderHistorico(){
   popularSelects();
-  const ano = document.getElementById('hist-ano').value;
-  const mes = document.getElementById('hist-mes').value;
-  const tipo = document.getElementById('hist-tipo').value;
-  const proj = document.getElementById('hist-projeto').value;
-  const busca = document.getElementById('hist-busca').value.toLowerCase();
-  let reg = filtrar(ano, mes);
-  if(tipo) reg = reg.filter(d=>d.tipo===tipo);
-  if(proj) reg = reg.filter(d=>d.projeto===proj);
-  if(busca) reg = reg.filter(d=>[d.nome,d.mi,d.solicitante,d.responsavel,d.secao,d.finalidade].join(' ').toLowerCase().includes(busca));
-  reg = reg.slice().sort((a,b)=>b.data.localeCompare(a.data));
-  if(!reg.length){ document.getElementById('tabela-historico').innerHTML='<div class="empty">Nenhum registro encontrado.</div>'; return; }
-  const total = reg.reduce((s,d)=>s+(d.qtd||0),0);
-  document.getElementById('tabela-historico').innerHTML = `
+  const ano=document.getElementById('hist-ano').value;
+  const mes=document.getElementById('hist-mes').value;
+  const tipo=document.getElementById('hist-tipo').value;
+  const proj=document.getElementById('hist-projeto').value;
+  const busca=document.getElementById('hist-busca').value.toLowerCase();
+  let reg=filtrar(ano,mes);
+  if(tipo) reg=reg.filter(d=>d.tipo===tipo);
+  if(proj) reg=reg.filter(d=>d.projeto===proj);
+  if(busca) reg=reg.filter(d=>[d.nome,d.mi,d.solicitante,d.responsavel,d.secao,d.finalidade].join(' ').toLowerCase().includes(busca));
+  reg=reg.slice().sort((a,b)=>b.data.localeCompare(a.data));
+  if(!reg.length){document.getElementById('tabela-historico').innerHTML='<div class="empty">Nenhum registro encontrado.</div>';return;}
+  const total=reg.reduce((s,d)=>s+(d.qtd||0),0);
+  document.getElementById('tabela-historico').innerHTML=`
     <div style="font-size:12px;color:#888;margin-bottom:8px">${reg.length} registros · <strong>${total.toLocaleString('pt-BR')}</strong> impressões</div>
     <div class="table-wrap"><table>
-      <thead><tr><th>Data</th><th>Nome</th><th>MI</th><th>Tipo</th><th>Solicitante</th><th>Responsável</th><th>Qtd</th><th>Tamanho</th><th>Projeto</th><th>Papel</th><th></th></tr></thead>
+      <thead><tr><th>Data</th><th>Nome</th><th>MI</th><th>Tipo</th><th>Solicitante</th><th>Responsável</th><th>Qtd</th><th>Tamanho</th><th>Projeto</th><th>Papel</th><th>Ações</th></tr></thead>
       <tbody>${reg.map(d=>`<tr>
         <td>${d.data.split('-').reverse().join('/')}</td>
-        <td style="max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${d.nome||''}">${d.nome||'—'}</td>
+        <td style="max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${d.nome||''}">${d.nome||'—'}</td>
         <td style="max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px;color:#666" title="${d.mi||''}">${d.mi||'—'}</td>
         <td>${d.tipo||'—'}</td><td>${d.solicitante||'—'}</td><td>${d.responsavel||'—'}</td>
         <td><strong>${d.qtd}</strong></td><td>${d.tamCustom||d.tamanho||'—'}</td>
         <td><span class="badge ${d.projeto==='PIT'?'badge-pit':'badge-extra'}">${d.projeto||'—'}</span></td>
         <td><span class="badge ${d.papel==='COMUM'?'badge-comum':d.papel==='FOTOGRÁFICO'?'badge-foto':'badge-adesivo'}">${d.papel||'—'}</span></td>
-        <td><button class="btn btn-danger" onclick="deletar('${d.id}')">🗑</button></td>
+        <td style="display:flex;gap:4px">
+          <button class="btn btn-edit" onclick="window.abrirEdicao('${d.id}')">✏️</button>
+          <button class="btn btn-danger" onclick="window.deletar('${d.id}')">🗑</button>
+        </td>
       </tr>`).join('')}</tbody>
     </table></div>`;
 }
+window.renderHistorico = renderHistorico;
 
-function tbl(rows, total){
-  return `<table><thead><tr><th>Descrição</th><th style="text-align:right">Qtd</th><th style="text-align:right">%</th></tr></thead>
-    <tbody>${rows.map(([k,v])=>`<tr><td>${k||'—'}</td><td style="text-align:right;font-weight:600">${v}</td><td style="text-align:right;color:#aaa">${total?Math.round(v/total*100):0}%</td></tr>`).join('')}</tbody></table>`;
+function tbl(rows,total){
+  return`<table><thead><tr><th>Descrição</th><th style="text-align:right">Qtd</th><th style="text-align:right">%</th></tr></thead><tbody>${rows.map(([k,v])=>`<tr><td>${k||'—'}</td><td style="text-align:right;font-weight:600">${v}</td><td style="text-align:right;color:#aaa">${total?Math.round(v/total*100):0}%</td></tr>`).join('')}</tbody></table>`;
 }
 
-function montarBalanco(reg, titulo, ano, mostrarEvolucao){
-  const total = reg.reduce((s,d)=>s+(d.qtd||0),0);
-  const pit = reg.filter(d=>d.projeto==='PIT').reduce((s,d)=>s+(d.qtd||0),0);
-  const agg = campo => { const m={}; reg.forEach(d=>{ const k=d[campo]||'—'; m[k]=(m[k]||0)+(d.qtd||0); }); return Object.entries(m).sort((a,b)=>b[1]-a[1]); };
-  const aggTam = () => { const m={}; reg.forEach(d=>{ const k=d.tamCustom||d.tamanho||'—'; m[k]=(m[k]||0)+(d.qtd||0); }); return Object.entries(m).sort((a,b)=>b[1]-a[1]); };
-  return `
-    <div style="font-size:16px;font-weight:700;margin-bottom:16px">Balanço: ${titulo}</div>
+function montarBalanco(reg,titulo,ano,mostrarEvolucao){
+  const total=reg.reduce((s,d)=>s+(d.qtd||0),0);
+  const pit=reg.filter(d=>d.projeto==='PIT').reduce((s,d)=>s+(d.qtd||0),0);
+  const agg=campo=>{const m={};reg.forEach(d=>{const k=d[campo]||'—';m[k]=(m[k]||0)+(d.qtd||0);});return Object.entries(m).sort((a,b)=>b[1]-a[1]);};
+  const aggTam=()=>{const m={};reg.forEach(d=>{const k=d.tamCustom||d.tamanho||'—';m[k]=(m[k]||0)+(d.qtd||0);});return Object.entries(m).sort((a,b)=>b[1]-a[1]);};
+  return`<div style="font-size:16px;font-weight:700;margin-bottom:16px">Balanço: ${titulo}</div>
     <div class="stat-grid">
       <div class="stat"><div class="stat-label">Total geral</div><div class="stat-value">${total.toLocaleString('pt-BR')}</div></div>
       <div class="stat"><div class="stat-label">PIT</div><div class="stat-value">${pit.toLocaleString('pt-BR')}</div></div>
@@ -423,66 +478,57 @@ function montarBalanco(reg, titulo, ano, mostrarEvolucao){
       <div class="summary-table"><div class="summary-header">Por seção</div>${tbl(agg('secao'),total)}</div>
     </div>
     <div class="summary-table"><div class="summary-header">Por solicitante</div>${tbl(agg('solicitante'),total)}</div>
-    ${mostrarEvolucao && ano ? `<div class="summary-table" style="margin-top:14px"><div class="summary-header">Evolução mensal — ${ano}</div>
+    ${mostrarEvolucao&&ano?`<div class="summary-table" style="margin-top:14px"><div class="summary-header">Evolução mensal — ${ano}</div>
       <table><thead><tr><th>Mês</th><th style="text-align:right">Total</th><th style="text-align:right">PIT</th><th style="text-align:right">Extra PIT</th><th style="text-align:right">Registros</th></tr></thead>
-      <tbody>${MESES.map((m,i)=>{
-        const mr=filtrar(ano,i+1); const mt=mr.reduce((s,d)=>s+(d.qtd||0),0); const mp=mr.filter(d=>d.projeto==='PIT').reduce((s,d)=>s+(d.qtd||0),0);
-        return `<tr><td><strong>${m}</strong></td><td style="text-align:right;font-weight:600">${mt||0}</td><td style="text-align:right">${mp||0}</td><td style="text-align:right">${mt-mp||0}</td><td style="text-align:right;color:#aaa">${mr.length||0}</td></tr>`;
-      }).join('')}
+      <tbody>${MESES.map((m,i)=>{const mr=filtrar(ano,i+1);const mt=mr.reduce((s,d)=>s+(d.qtd||0),0);const mp=mr.filter(d=>d.projeto==='PIT').reduce((s,d)=>s+(d.qtd||0),0);return`<tr><td><strong>${m}</strong></td><td style="text-align:right;font-weight:600">${mt||0}</td><td style="text-align:right">${mp||0}</td><td style="text-align:right">${mt-mp||0}</td><td style="text-align:right;color:#aaa">${mr.length||0}</td></tr>`;}).join('')}
       <tr style="background:#f0f0f8"><td><strong>TOTAL</strong></td><td style="text-align:right;font-weight:700">${total}</td><td style="text-align:right;font-weight:700">${pit}</td><td style="text-align:right;font-weight:700">${total-pit}</td><td style="text-align:right;color:#aaa">${reg.length}</td></tr>
-      </tbody></table></div>` : ''}`;
+      </tbody></table></div>`:''}`;
 }
 
 function renderBalancoMensal(){
   popularSelects();
-  const ano = document.getElementById('bal-ano-m').value;
-  const mes = document.getElementById('bal-mes-m').value;
-  const reg = filtrar(ano, mes);
-  const titulo = mes ? `${MESES[parseInt(mes)-1]} ${ano}` : `Ano ${ano}`;
-  document.getElementById('balanco-content-mensal').innerHTML = montarBalanco(reg, titulo, ano, !mes);
+  const ano=document.getElementById('bal-ano-m').value;
+  const mes=document.getElementById('bal-mes-m').value;
+  const reg=filtrar(ano,mes);
+  const titulo=mes?`${MESES[parseInt(mes)-1]} ${ano}`:`Ano ${ano}`;
+  document.getElementById('balanco-content-mensal').innerHTML=montarBalanco(reg,titulo,ano,!mes);
 }
+window.renderBalancoMensal = renderBalancoMensal;
 
 function renderBalancoAnual(){
   popularSelects();
-  const ano = document.getElementById('bal-ano-a').value;
-  const reg = filtrar(ano, '');
-  document.getElementById('balanco-content-anual').innerHTML = montarBalanco(reg, `Ano ${ano}`, ano, true);
+  const ano=document.getElementById('bal-ano-a').value;
+  const reg=filtrar(ano,'');
+  document.getElementById('balanco-content-anual').innerHTML=montarBalanco(reg,`Ano ${ano}`,ano,true);
 }
+window.renderBalancoAnual = renderBalancoAnual;
 
 function renderBalancoPeriodo(){
-  const de = document.getElementById('bal-de').value;
-  const ate = document.getElementById('bal-ate').value;
-  if(!de||!ate){ document.getElementById('balanco-content-periodo').innerHTML='<div class="empty">Selecione as datas de início e fim.</div>'; return; }
-  const reg = dados.filter(d=>d.data&&d.data>=de&&d.data<=ate);
-  const fmt = d => d.split('-').reverse().join('/');
-  document.getElementById('balanco-content-periodo').innerHTML = montarBalanco(reg, `${fmt(de)} a ${fmt(ate)}`, null, false);
+  const de=document.getElementById('bal-de').value;
+  const ate=document.getElementById('bal-ate').value;
+  if(!de||!ate){document.getElementById('balanco-content-periodo').innerHTML='<div class="empty">Selecione as datas de início e fim.</div>';return;}
+  const reg=dados.filter(d=>d.data&&d.data>=de&&d.data<=ate);
+  const fmt=d=>d.split('-').reverse().join('/');
+  document.getElementById('balanco-content-periodo').innerHTML=montarBalanco(reg,`${fmt(de)} a ${fmt(ate)}`,null,false);
 }
+window.renderBalancoPeriodo = renderBalancoPeriodo;
 
 window.exportarCSV = function(modo){
-  let reg=[], titulo='';
-  if(modo==='mensal'){
-    const ano=document.getElementById('bal-ano-m').value; const mes=document.getElementById('bal-mes-m').value;
-    reg=filtrar(ano,mes); titulo=mes?`${MESES[parseInt(mes)-1]}_${ano}`:`Ano_${ano}`;
-  } else if(modo==='anual'){
-    const ano=document.getElementById('bal-ano-a').value; reg=filtrar(ano,''); titulo=`Ano_${ano}`;
-  } else {
-    const de=document.getElementById('bal-de').value; const ate=document.getElementById('bal-ate').value;
-    if(!de||!ate){ toast('Selecione as datas','#c0392b'); return; }
-    reg=dados.filter(d=>d.data&&d.data>=de&&d.data<=ate); titulo=`${de}_a_${ate}`;
-  }
-  const total=reg.reduce((s,d)=>s+(d.qtd||0),0); const pit=reg.filter(d=>d.projeto==='PIT').reduce((s,d)=>s+(d.qtd||0),0);
+  let reg=[],titulo='';
+  if(modo==='mensal'){const ano=document.getElementById('bal-ano-m').value;const mes=document.getElementById('bal-mes-m').value;reg=filtrar(ano,mes);titulo=mes?`${MESES[parseInt(mes)-1]}_${ano}`:`Ano_${ano}`;}
+  else if(modo==='anual'){const ano=document.getElementById('bal-ano-a').value;reg=filtrar(ano,'');titulo=`Ano_${ano}`;}
+  else{const de=document.getElementById('bal-de').value;const ate=document.getElementById('bal-ate').value;if(!de||!ate){toast('Selecione as datas','#c0392b');return;}reg=dados.filter(d=>d.data&&d.data>=de&&d.data<=ate);titulo=`${de}_a_${ate}`;}
+  const total=reg.reduce((s,d)=>s+(d.qtd||0),0);const pit=reg.filter(d=>d.projeto==='PIT').reduce((s,d)=>s+(d.qtd||0),0);
   let csv=`BALANÇO DGEO\nPeríodo:;${titulo.replace(/_/g,' ')}\nGerado em:;${new Date().toLocaleString('pt-BR')}\n\nTotal Geral;${total}\nPIT;${pit}\nExtra PIT;${total-pit}\nRegistros;${reg.length}\n\n`;
   csv+=`Data;Nome;MI;Escala;Tipo;Solicitante;Responsável;Seção;Qtd;Tamanho;Projeto;Papel;Finalidade\n`;
-  reg.slice().sort((a,b)=>a.data.localeCompare(b.data)).forEach(d=>{
-    csv+=`${d.data.split('-').reverse().join('/')};${d.nome||''};${d.mi||''};${d.escala||''};${d.tipo||''};${d.solicitante||''};${d.responsavel||''};${d.secao||''};${d.qtd||0};${d.tamCustom||d.tamanho||''};${d.projeto||''};${d.papel||''};${d.finalidade||''}\n`;
-  });
+  reg.slice().sort((a,b)=>a.data.localeCompare(b.data)).forEach(d=>{csv+=`${d.data.split('-').reverse().join('/')};${d.nome||''};${d.mi||''};${d.escala||''};${d.tipo||''};${d.solicitante||''};${d.responsavel||''};${d.secao||''};${d.qtd||0};${d.tamCustom||d.tamanho||''};${d.projeto||''};${d.papel||''};${d.finalidade||''}\n`;});
   const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
-  const url=URL.createObjectURL(blob); const a=document.createElement('a');
-  a.href=url; a.download=`balanco_${titulo}.csv`; a.click(); URL.revokeObjectURL(url);
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');
+  a.href=url;a.download=`balanco_${titulo}.csv`;a.click();URL.revokeObjectURL(url);
   toast('✔ Exportado!','#0a6b4a');
 }
 
-document.getElementById('f-data').value = new Date().toISOString().slice(0,10);
+document.getElementById('f-data').value=new Date().toISOString().slice(0,10);
 popularSelects();
 </script>
 </body>
