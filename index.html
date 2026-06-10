@@ -243,16 +243,29 @@ tr:hover td{background:#f8f8fc}
     </div>
   </div>
 
-  <!-- TINTAS -->
-  <div class="section-title">🎨 Estoque de Cartuchos de Tinta</div>
+  <!-- TINTAS TIPO B -->
+  <div class="section-title">🎨 Cartuchos Tipo B — HP T930 / T2530 (B3PxxA)</div>
   <div class="insumos-grid">
     <div class="insumo-card">
-      <div class="insumo-header"><span>Tintas Disponíveis na DGEO</span></div>
-      <div id="tintas-dgeo"></div>
+      <div class="insumo-header"><span>Tipo B — Disponível na DGEO</span></div>
+      <div id="tintas-b-dgeo"></div>
     </div>
     <div class="insumo-card">
-      <div class="insumo-header"><span>Tintas Disponíveis no Almoxarifado</span></div>
-      <div id="tintas-almo"></div>
+      <div class="insumo-header"><span>Tipo B — Disponível no Almoxarifado</span></div>
+      <div id="tintas-b-almo"></div>
+    </div>
+  </div>
+
+  <!-- TINTAS TIPO P -->
+  <div class="section-title">🎨 Cartuchos Tipo P — HP T2600DR (P2VxxA)</div>
+  <div class="insumos-grid">
+    <div class="insumo-card">
+      <div class="insumo-header"><span>Tipo P — Disponível na DGEO</span></div>
+      <div id="tintas-p-dgeo"></div>
+    </div>
+    <div class="insumo-card">
+      <div class="insumo-header"><span>Tipo P — Disponível no Almoxarifado</span></div>
+      <div id="tintas-p-almo"></div>
     </div>
   </div>
 
@@ -389,21 +402,37 @@ const PAPEIS_ALMO = [
   {id:'p_comum_almo', nome:'Comum (61x30m)', local:'almo'},
   {id:'p_sulfite_almo', nome:'Sulfite/Comum 90g (914x50m)', local:'almo'},
 ];
-const TINTAS_DGEO = [
-  {id:'t_mb_dgeo', nome:'Matte Black (B3P22A)', cor:'#333', local:'dgeo'},
-  {id:'t_pb_dgeo', nome:'Photo Black (B3P23A)', cor:'#111', local:'dgeo'},
-  {id:'t_gr_dgeo', nome:'Gray (B3P24A)', cor:'#888', local:'dgeo'},
-  {id:'t_ye_dgeo', nome:'Yellow (B3P21A)', cor:'#e6b800', local:'dgeo'},
-  {id:'t_cy_dgeo', nome:'Cyan (B3P19A)', cor:'#00a8cc', local:'dgeo'},
-  {id:'t_ma_dgeo', nome:'Magenta (B3P20A)', cor:'#cc0066', local:'dgeo'},
+const TINTAS_B_DGEO = [
+  {id:'tb_mb_dgeo', nome:'Matte Black (B3P22A)', cor:'#333'},
+  {id:'tb_pb_dgeo', nome:'Photo Black (B3P23A)', cor:'#111'},
+  {id:'tb_gr_dgeo', nome:'Gray (B3P24A)', cor:'#888'},
+  {id:'tb_ye_dgeo', nome:'Yellow (B3P21A)', cor:'#e6b800'},
+  {id:'tb_cy_dgeo', nome:'Cyan (B3P19A)', cor:'#00a8cc'},
+  {id:'tb_ma_dgeo', nome:'Magenta (B3P20A)', cor:'#cc0066'},
 ];
-const TINTAS_ALMO = [
-  {id:'t_mb_almo', nome:'Matte Black (P2V65A)', cor:'#333', local:'almo'},
-  {id:'t_pb_almo', nome:'Photo Black (P2V67A)', cor:'#111', local:'almo'},
-  {id:'t_gr_almo', nome:'Gray (P2V72A)', cor:'#888', local:'almo'},
-  {id:'t_ye_almo', nome:'Yellow (P2V64A)', cor:'#e6b800', local:'almo'},
-  {id:'t_cy_almo', nome:'Cyan (P2V62A)', cor:'#00a8cc', local:'almo'},
-  {id:'t_ma_almo', nome:'Magenta (P2V63A)', cor:'#cc0066', local:'almo'},
+const TINTAS_B_ALMO = [
+  {id:'tb_mb_almo', nome:'Matte Black (B3P22A)', cor:'#333'},
+  {id:'tb_pb_almo', nome:'Photo Black (B3P23A)', cor:'#111'},
+  {id:'tb_gr_almo', nome:'Gray (B3P24A)', cor:'#888'},
+  {id:'tb_ye_almo', nome:'Yellow (B3P21A)', cor:'#e6b800'},
+  {id:'tb_cy_almo', nome:'Cyan (B3P19A)', cor:'#00a8cc'},
+  {id:'tb_ma_almo', nome:'Magenta (B3P20A)', cor:'#cc0066'},
+];
+const TINTAS_P_DGEO = [
+  {id:'tp_mb_dgeo', nome:'Matte Black (P2V65A)', cor:'#333'},
+  {id:'tp_pb_dgeo', nome:'Photo Black (P2V67A)', cor:'#111'},
+  {id:'tp_gr_dgeo', nome:'Gray (P2V72A)', cor:'#888'},
+  {id:'tp_ye_dgeo', nome:'Yellow (P2V64A)', cor:'#e6b800'},
+  {id:'tp_cy_dgeo', nome:'Cyan (P2V62A)', cor:'#00a8cc'},
+  {id:'tp_ma_dgeo', nome:'Magenta (P2V63A)', cor:'#cc0066'},
+];
+const TINTAS_P_ALMO = [
+  {id:'tp_mb_almo', nome:'Matte Black (P2V65A)', cor:'#333'},
+  {id:'tp_pb_almo', nome:'Photo Black (P2V67A)', cor:'#111'},
+  {id:'tp_gr_almo', nome:'Gray (P2V72A)', cor:'#888'},
+  {id:'tp_ye_almo', nome:'Yellow (P2V64A)', cor:'#e6b800'},
+  {id:'tp_cy_almo', nome:'Cyan (P2V62A)', cor:'#00a8cc'},
+  {id:'tp_ma_almo', nome:'Magenta (P2V63A)', cor:'#cc0066'},
 ];
 const PLOTTERS = [
   {id:'plt_t930', nome:'HP Designjet T930', modelo:'Postscript'},
@@ -722,8 +751,10 @@ function renderInsumos(){
       </div>`;
     }).join('');
   }
-  renderTintas(TINTAS_DGEO,'tintas-dgeo');
-  renderTintas(TINTAS_ALMO,'tintas-almo');
+  renderTintas(TINTAS_B_DGEO,'tintas-b-dgeo');
+  renderTintas(TINTAS_B_ALMO,'tintas-b-almo');
+  renderTintas(TINTAS_P_DGEO,'tintas-p-dgeo');
+  renderTintas(TINTAS_P_ALMO,'tintas-p-almo');
 
   renderConsumo();
 }
