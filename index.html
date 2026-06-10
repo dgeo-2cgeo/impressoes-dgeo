@@ -11,7 +11,7 @@ header{background:#1a1a2e;color:#fff;padding:14px 24px;display:flex;align-items:
 header h1{font-size:16px;font-weight:600;letter-spacing:0.03em}
 header span{font-size:12px;opacity:0.5;margin-left:auto}
 .tabs{display:flex;background:#fff;border-bottom:1px solid #e0e0e8;padding:0 16px;flex-wrap:wrap}
-.tab{padding:12px 16px;cursor:pointer;font-size:13px;color:#666;border-bottom:2px solid transparent;background:none;border-top:none;border-left:none;border-right:none;font-family:inherit;font-weight:500}
+.tab{padding:11px 15px;cursor:pointer;font-size:13px;color:#666;border-bottom:2px solid transparent;background:none;border-top:none;border-left:none;border-right:none;font-family:inherit;font-weight:500}
 .tab.active{color:#1a1a2e;border-bottom:2px solid #1a1a2e}
 .tab:hover{color:#1a1a2e;background:#f8f8fb}
 .pane{padding:24px;display:none}
@@ -25,6 +25,7 @@ header span{font-size:12px;opacity:0.5;margin-left:auto}
 .btn-primary{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
 .btn-danger{color:#c0392b;border-color:#e8c0be;padding:4px 10px;font-size:11px}
 .btn-edit{color:#1a6b9a;border-color:#b0d4e8;padding:4px 10px;font-size:11px}
+.btn-sm{padding:5px 12px;font-size:12px}
 .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
 .stat{background:#fff;border-radius:8px;padding:14px 16px;border:1px solid #e8e8f0}
 .stat-label{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px}
@@ -50,6 +51,9 @@ tr:hover td{background:#f8f8fc}
 .badge-comum{background:#f0f0f0;color:#555}
 .badge-foto{background:#fff3e0;color:#a05a00}
 .badge-adesivo{background:#fce8f0;color:#992244}
+.badge-ok{background:#e0f5ec;color:#0a6b4a}
+.badge-manut{background:#fff3e0;color:#a05a00}
+.badge-inativa{background:#fdecea;color:#c62828}
 .monthly-bars{display:flex;align-items:flex-end;gap:5px;height:110px;margin-top:8px}
 .m-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
 .m-bar{width:100%;background:#b0aee8;border-radius:3px 3px 0 0;min-height:2px}
@@ -67,12 +71,37 @@ tr:hover td{background:#f8f8fc}
 .status-bar{background:#e8f5e9;color:#2e7d32;padding:8px 16px;font-size:12px;font-weight:600}
 .status-bar.erro{background:#fdecea;color:#c62828}
 .status-bar.sync{background:#fff8e1;color:#f57f17}
-/* Modal de edição */
 .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center}
 .modal-overlay.active{display:flex}
 .modal{background:#fff;border-radius:12px;padding:24px;width:90%;max-width:700px;max-height:90vh;overflow-y:auto}
 .modal-title{font-size:16px;font-weight:700;margin-bottom:20px;color:#1a1a2e}
 .modal-btns{display:flex;gap:10px;margin-top:20px}
+/* INSUMOS */
+.insumos-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.insumo-card{background:#fff;border:1px solid #e8e8f0;border-radius:10px;overflow:hidden}
+.insumo-header{padding:12px 16px;font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:0.05em;border-bottom:1px solid #f0f0f8;background:#fafafa;display:flex;justify-content:space-between;align-items:center}
+.insumo-row{display:flex;align-items:center;padding:8px 16px;border-bottom:1px solid #f5f5f8;gap:10px}
+.insumo-nome{flex:1;font-size:13px;font-weight:500}
+.insumo-qtd{font-size:18px;font-weight:700;min-width:40px;text-align:center}
+.insumo-qtd.baixo{color:#c0392b}
+.insumo-qtd.medio{color:#e67e22}
+.insumo-qtd.ok{color:#0a6b4a}
+.insumo-btns{display:flex;gap:4px}
+.btn-entry{background:#e0f5ec;color:#0a6b4a;border:none;border-radius:4px;padding:3px 8px;font-size:12px;cursor:pointer;font-weight:600}
+.btn-exit{background:#fdecea;color:#c62828;border:none;border-radius:4px;padding:3px 8px;font-size:12px;cursor:pointer;font-weight:600}
+.plotter-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+.plotter-card{background:#fff;border:1px solid #e8e8f0;border-radius:10px;padding:20px;text-align:center}
+.plotter-nome{font-size:14px;font-weight:700;margin-bottom:4px}
+.plotter-modelo{font-size:11px;color:#888;margin-bottom:16px}
+.plotter-status{font-size:13px;font-weight:600;margin-bottom:16px}
+.status-dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+.dot-ok{background:#0a6b4a}
+.dot-manut{background:#e67e22}
+.dot-inativa{background:#c0392b}
+.consumo-row{display:flex;justify-content:space-between;padding:6px 16px;border-bottom:1px solid #f5f5f8;font-size:12px}
+.consumo-label{color:#555}
+.consumo-val{font-weight:600}
+.section-title{font-size:14px;font-weight:700;margin-bottom:12px;color:#1a1a2e}
 </style>
 </head>
 <body>
@@ -91,6 +120,7 @@ tr:hover td{background:#f8f8fc}
   <button class="tab" onclick="switchTab('balanco')">📄 Balanço Mensal</button>
   <button class="tab" onclick="switchTab('anual')">📄 Balanço Anual</button>
   <button class="tab" onclick="switchTab('periodo')">📄 Período Personalizado</button>
+  <button class="tab" onclick="switchTab('insumos')">🖨️ Insumos</button>
 </div>
 
 <!-- PAINEL -->
@@ -194,13 +224,57 @@ tr:hover td{background:#f8f8fc}
   <div id="balanco-content-periodo"></div>
 </div>
 
-<!-- MODAL EDIÇÃO -->
+<!-- INSUMOS -->
+<div id="tab-insumos" class="pane">
+  <!-- PLOTTERS -->
+  <div class="section-title">🖨️ Situação Operacional das Plotters</div>
+  <div class="plotter-grid" id="plotter-grid"></div>
+
+  <!-- PAPÉIS -->
+  <div class="section-title">📜 Estoque de Papéis (Bobinas)</div>
+  <div class="insumos-grid">
+    <div class="insumo-card">
+      <div class="insumo-header"><span>Papéis Disponíveis na DGEO</span></div>
+      <div id="papeis-dgeo"></div>
+    </div>
+    <div class="insumo-card">
+      <div class="insumo-header"><span>Papéis Disponíveis no Almoxarifado</span></div>
+      <div id="papeis-almo"></div>
+    </div>
+  </div>
+
+  <!-- TINTAS -->
+  <div class="section-title">🎨 Estoque de Cartuchos de Tinta</div>
+  <div class="insumos-grid">
+    <div class="insumo-card">
+      <div class="insumo-header"><span>Tintas Disponíveis na DGEO</span></div>
+      <div id="tintas-dgeo"></div>
+    </div>
+    <div class="insumo-card">
+      <div class="insumo-header"><span>Tintas Disponíveis no Almoxarifado</span></div>
+      <div id="tintas-almo"></div>
+    </div>
+  </div>
+
+  <!-- CONSUMO MENSAL -->
+  <div class="section-title">📈 Consumo Mensal de Insumos</div>
+  <div class="sel-row">
+    <span>Ano:</span><select id="cons-ano" onchange="window.renderConsumo()"></select>
+    <span>Mês:</span><select id="cons-mes" onchange="window.renderConsumo()"><option value="">Todos</option></select>
+  </div>
+  <div class="insumo-card" style="margin-bottom:16px">
+    <div class="insumo-header"><span>Histórico de movimentações</span></div>
+    <div id="consumo-lista"></div>
+  </div>
+</div>
+
+<!-- MODAL EDIÇÃO IMPRESSÃO -->
 <div class="modal-overlay" id="modal-overlay">
   <div class="modal">
     <div class="modal-title">✏️ Editar Impressão</div>
     <div class="form-grid">
       <div class="form-group"><label>Data *</label><input type="date" id="e-data"></div>
-      <div class="form-group"><label>Nome / Descrição</label><input type="text" id="e-nome"></div>
+      <div class="form-group"><label>Nome</label><input type="text" id="e-nome"></div>
       <div class="form-group"><label>MI</label><input type="text" id="e-mi"></div>
       <div class="form-group"><label>Escala</label>
         <select id="e-escala"><option>1/25.000</option><option>1/50.000</option><option>1/100.000</option><option>SEM ESCALA</option><option>ESPECIAL</option></select>
@@ -233,11 +307,57 @@ tr:hover td{background:#f8f8fc}
   </div>
 </div>
 
+<!-- MODAL MOVIMENTAÇÃO INSUMO -->
+<div class="modal-overlay" id="modal-insumo">
+  <div class="modal">
+    <div class="modal-title" id="modal-insumo-title">Movimentação de Estoque</div>
+    <div class="form-grid" style="grid-template-columns:1fr 1fr">
+      <div class="form-group"><label>Tipo</label>
+        <select id="mov-tipo"><option value="entrada">➕ Entrada</option><option value="saida">➖ Saída</option></select>
+      </div>
+      <div class="form-group"><label>Quantidade</label>
+        <input type="number" id="mov-qtd" min="1" value="1">
+      </div>
+      <div class="form-group"><label>Data</label>
+        <input type="date" id="mov-data">
+      </div>
+      <div class="form-group"><label>Observação</label>
+        <input type="text" id="mov-obs" placeholder="Ex: Recebimento almoxarifado...">
+      </div>
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-primary" onclick="window.salvarMovimentacao()">✔ Confirmar</button>
+      <button class="btn" onclick="window.fecharModalInsumo()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL STATUS PLOTTER -->
+<div class="modal-overlay" id="modal-plotter">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-title" id="modal-plotter-title">Atualizar Status</div>
+    <div class="form-group" style="margin-bottom:16px"><label>Status</label>
+      <select id="plt-status">
+        <option value="ok">✅ Funcionando</option>
+        <option value="manutencao">⚠️ Em manutenção</option>
+        <option value="inativa">❌ Inativa</option>
+      </select>
+    </div>
+    <div class="form-group" style="margin-bottom:16px"><label>Observação</label>
+      <input type="text" id="plt-obs" placeholder="Ex: Aguardando peça...">
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-primary" onclick="window.salvarStatusPlotter()">✔ Salvar</button>
+      <button class="btn" onclick="window.fecharModalPlotter()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
-import { getFirestore, collection, addDoc, deleteDoc, updateDoc, doc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, deleteDoc, updateDoc, doc, onSnapshot, query, orderBy, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDi5NThOd0IHWHoSVx6PsFZgo9UhF-dCi4",
@@ -251,72 +371,127 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const col = collection(db, "impressoes");
+const colMov = collection(db, "movimentacoes");
 const MESES = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-let dados = [];
+let dados = [], movimentacoes = [];
 let abaAtiva = 'dashboard';
-let editandoId = null;
+let editandoId = null, movInsumoId = null, plotterEditId = null;
 
-function setStatus(msg, tipo='ok'){
-  const el = document.getElementById('status-bar');
-  el.textContent = msg;
-  el.className = 'status-bar' + (tipo!='ok' ? ' '+tipo : '');
-}
-function toast(msg, cor='#1a1a2e'){
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.style.background = cor; t.style.opacity = 1;
-  setTimeout(()=>{ t.style.opacity = 0; }, 2200);
-}
+// Insumos padrão
+const PAPEIS_DGEO = [
+  {id:'p_foto_dgeo', nome:'Fotográfico 180g (914x30m)', local:'dgeo'},
+  {id:'p_adesivo_dgeo', nome:'Adesivo 180g (914x30m)', local:'dgeo'},
+  {id:'p_vegetal_dgeo', nome:'Vegetal (61x50m)', local:'dgeo'},
+  {id:'p_comum_dgeo', nome:'Sulfite/Comum 90g (914x50m)', local:'dgeo'},
+];
+const PAPEIS_ALMO = [
+  {id:'p_foto_almo', nome:'Fotográfico/Glossy 180g (914x30m)', local:'almo'},
+  {id:'p_comum_almo', nome:'Comum (61x30m)', local:'almo'},
+  {id:'p_sulfite_almo', nome:'Sulfite/Comum 90g (914x50m)', local:'almo'},
+];
+const TINTAS_DGEO = [
+  {id:'t_mb_dgeo', nome:'Matte Black (B3P22A)', cor:'#333', local:'dgeo'},
+  {id:'t_pb_dgeo', nome:'Photo Black (B3P23A)', cor:'#111', local:'dgeo'},
+  {id:'t_gr_dgeo', nome:'Gray (B3P24A)', cor:'#888', local:'dgeo'},
+  {id:'t_ye_dgeo', nome:'Yellow (B3P21A)', cor:'#e6b800', local:'dgeo'},
+  {id:'t_cy_dgeo', nome:'Cyan (B3P19A)', cor:'#00a8cc', local:'dgeo'},
+  {id:'t_ma_dgeo', nome:'Magenta (B3P20A)', cor:'#cc0066', local:'dgeo'},
+];
+const TINTAS_ALMO = [
+  {id:'t_mb_almo', nome:'Matte Black (P2V65A)', cor:'#333', local:'almo'},
+  {id:'t_pb_almo', nome:'Photo Black (P2V67A)', cor:'#111', local:'almo'},
+  {id:'t_gr_almo', nome:'Gray (P2V72A)', cor:'#888', local:'almo'},
+  {id:'t_ye_almo', nome:'Yellow (P2V64A)', cor:'#e6b800', local:'almo'},
+  {id:'t_cy_almo', nome:'Cyan (P2V62A)', cor:'#00a8cc', local:'almo'},
+  {id:'t_ma_almo', nome:'Magenta (P2V63A)', cor:'#cc0066', local:'almo'},
+];
+const PLOTTERS = [
+  {id:'plt_t930', nome:'HP Designjet T930', modelo:'Postscript'},
+  {id:'plt_t2530', nome:'HP Designjet T2530', modelo:'Postscript'},
+  {id:'plt_t2600dr', nome:'HP Designjet T2600DR', modelo:'Postscript'},
+];
 
-onSnapshot(query(col, orderBy("data","desc")), snap => {
-  dados = snap.docs.map(d => ({id: d.id, ...d.data()}));
+let estoqueData = {};
+let plotterData = {};
+
+function setStatus(msg,tipo='ok'){const el=document.getElementById('status-bar');el.textContent=msg;el.className='status-bar'+(tipo!='ok'?' '+tipo:'');}
+function toast(msg,cor='#1a1a2e'){const t=document.getElementById('toast');t.textContent=msg;t.style.background=cor;t.style.opacity=1;setTimeout(()=>{t.style.opacity=0;},2200);}
+
+// Listeners Firebase
+onSnapshot(query(col,orderBy("data","desc")),snap=>{
+  dados=snap.docs.map(d=>({id:d.id,...d.data()}));
   setStatus('✅ Conectado — dados sincronizados em tempo real');
-  const total = dados.reduce((s,d)=>s+(d.qtd||0),0);
-  document.getElementById('header-total').textContent = total ? `${total.toLocaleString('pt-BR')} impressões` : '';
+  const total=dados.reduce((s,d)=>s+(d.qtd||0),0);
+  document.getElementById('header-total').textContent=total?`${total.toLocaleString('pt-BR')} impressões`:'';
   popularSelects();
   if(abaAtiva==='dashboard') renderDash();
   if(abaAtiva==='historico') renderHistorico();
   if(abaAtiva==='balanco') renderBalancoMensal();
   if(abaAtiva==='anual') renderBalancoAnual();
   if(abaAtiva==='periodo') renderBalancoPeriodo();
-}, ()=> setStatus('❌ Erro de conexão','erro'));
+},()=>setStatus('❌ Erro de conexão','erro'));
+
+onSnapshot(query(colMov,orderBy("data","desc")),snap=>{
+  movimentacoes=snap.docs.map(d=>({id:d.id,...d.data()}));
+  if(abaAtiva==='insumos') renderInsumos();
+});
+
+// Carregar estoque e plotters do Firestore
+async function carregarEstoque(){
+  try{
+    const snap=await getDoc(doc(db,'config','estoque'));
+    if(snap.exists()) estoqueData=snap.data();
+    const snapP=await getDoc(doc(db,'config','plotters'));
+    if(snapP.exists()) plotterData=snapP.data();
+  }catch(e){}
+  renderInsumos();
+}
+
+async function salvarEstoque(){
+  try{ await setDoc(doc(db,'config','estoque'),estoqueData); }catch(e){}
+}
+async function salvarPlotters(){
+  try{ await setDoc(doc(db,'config','plotters'),plotterData); }catch(e){}
+}
 
 function popularSelects(){
-  const anoAtual = new Date().getFullYear().toString();
-  const anos = [...new Set(dados.map(d=>d.data?.slice(0,4)))].filter(Boolean).sort().reverse();
+  const anoAtual=new Date().getFullYear().toString();
+  const anos=[...new Set(dados.map(d=>d.data?.slice(0,4)))].filter(Boolean).sort().reverse();
   if(!anos.includes(anoAtual)) anos.unshift(anoAtual);
-  ['dash-ano','hist-ano','bal-ano-m','bal-ano-a'].forEach(id=>{
-    const el=document.getElementById(id); if(!el) return;
+  ['dash-ano','hist-ano','bal-ano-m','bal-ano-a','cons-ano'].forEach(id=>{
+    const el=document.getElementById(id);if(!el)return;
     const val=el.value||anoAtual;
     el.innerHTML=anos.map(a=>`<option value="${a}">${a}</option>`).join('');
     el.value=val;
   });
-  ['dash-mes','hist-mes','bal-mes-m'].forEach(id=>{
-    const el=document.getElementById(id); if(!el) return;
+  ['dash-mes','hist-mes','bal-mes-m','cons-mes'].forEach(id=>{
+    const el=document.getElementById(id);if(!el)return;
     const val=el.value||'';
     const base=id==='hist-mes'?'<option value="">Todos os meses</option>':'<option value="">Todos</option>';
     el.innerHTML=base+MESES.map((m,i)=>`<option value="${i+1}">${m}</option>`).join('');
     el.value=val;
   });
   const ht=document.getElementById('hist-tipo');
-  if(ht){ const val=ht.value; const tipos=[...new Set(dados.map(d=>d.tipo))].filter(Boolean).sort(); ht.innerHTML='<option value="">Todos os tipos</option>'+tipos.map(t=>`<option>${t}</option>`).join(''); ht.value=val; }
+  if(ht){const val=ht.value;const tipos=[...new Set(dados.map(d=>d.tipo))].filter(Boolean).sort();ht.innerHTML='<option value="">Todos os tipos</option>'+tipos.map(t=>`<option>${t}</option>`).join('');ht.value=val;}
 }
 
 function filtrar(ano,mes){
-  return dados.filter(d=>{ if(!d.data) return false; return (!ano||d.data.slice(0,4)===ano)&&(!mes||parseInt(d.data.slice(5,7))===parseInt(mes)); });
+  return dados.filter(d=>{if(!d.data)return false;return(!ano||d.data.slice(0,4)===ano)&&(!mes||parseInt(d.data.slice(5,7))===parseInt(mes));});
 }
 
-window.switchTab = function(name){
+window.switchTab=function(name){
   abaAtiva=name;
   document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+name).classList.add('active');
-  const idx=['dashboard','registro','historico','balanco','anual','periodo'].indexOf(name);
+  const idx=['dashboard','registro','historico','balanco','anual','periodo','insumos'].indexOf(name);
   document.querySelectorAll('.tab')[idx].classList.add('active');
   if(name==='dashboard') renderDash();
   if(name==='historico') renderHistorico();
   if(name==='balanco') renderBalancoMensal();
   if(name==='anual') renderBalancoAnual();
   if(name==='periodo') renderBalancoPeriodo();
+  if(name==='insumos'){carregarEstoque();}
 }
 
 function barChart(id,data,color){
@@ -334,7 +509,7 @@ function renderDash(){
   const total=reg.reduce((s,d)=>s+(d.qtd||0),0);
   const pit=reg.filter(d=>d.projeto==='PIT').reduce((s,d)=>s+(d.qtd||0),0);
   const extra=total-pit;
-  const tipos={}; reg.forEach(d=>{tipos[d.tipo]=(tipos[d.tipo]||0)+(d.qtd||0);});
+  const tipos={};reg.forEach(d=>{tipos[d.tipo]=(tipos[d.tipo]||0)+(d.qtd||0);});
   const dom=Object.entries(tipos).sort((a,b)=>b[1]-a[1])[0];
   document.getElementById('stats').innerHTML=`
     <div class="stat"><div class="stat-label">Total impressões</div><div class="stat-value">${total.toLocaleString('pt-BR')}</div><div class="stat-sub">${reg.length} registros</div></div>
@@ -342,9 +517,9 @@ function renderDash(){
     <div class="stat"><div class="stat-label">Extra PIT</div><div class="stat-value">${extra.toLocaleString('pt-BR')}</div><div class="stat-sub">${total?Math.round(extra/total*100):0}% do total</div></div>
     <div class="stat"><div class="stat-label">Tipo principal</div><div class="stat-value" style="font-size:14px">${dom?dom[0]:'—'}</div><div class="stat-sub">${dom?dom[1]+' unidades':'sem dados'}</div></div>`;
   barChart('chart-tipo',Object.entries(tipos).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([k,v])=>({k,v})),'#3c3a8e');
-  const papel={}; reg.forEach(d=>{papel[d.papel]=(papel[d.papel]||0)+(d.qtd||0);});
+  const papel={};reg.forEach(d=>{papel[d.papel]=(papel[d.papel]||0)+(d.qtd||0);});
   barChart('chart-papel',Object.entries(papel).sort((a,b)=>b[1]-a[1]).map(([k,v])=>({k,v})),'#0a6b4a');
-  const tam={}; reg.forEach(d=>{const t=d.tamCustom||d.tamanho;tam[t]=(tam[t]||0)+(d.qtd||0);});
+  const tam={};reg.forEach(d=>{const t=d.tamCustom||d.tamanho;tam[t]=(tam[t]||0)+(d.qtd||0);});
   barChart('chart-tam',Object.entries(tam).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([k,v])=>({k,v})),'#a05a00');
   const porMes=Array(12).fill(0);
   filtrar(ano,'').forEach(d=>{porMes[parseInt(d.data.slice(5,7))-1]+=(d.qtd||0);});
@@ -354,35 +529,31 @@ function renderDash(){
     <div class="bar-row"><span class="bar-label">PIT</span><div class="bar-wrap"><div class="bar-fill" style="width:${total?Math.max(3,Math.round(pit/total*100)):3}%;background:#3c3a8e"></div></div><span class="bar-val">${pit}</span></div>
     <div class="bar-row"><span class="bar-label">Extra PIT</span><div class="bar-wrap"><div class="bar-fill" style="width:${total?Math.max(3,Math.round(extra/total*100)):3}%;background:#0a6b4a"></div></div><span class="bar-val">${extra}</span></div>`;
 }
-window.renderDash = renderDash;
+window.renderDash=renderDash;
 
-window.salvarImpressao = async function(){
+window.salvarImpressao=async function(){
   const data=document.getElementById('f-data').value;
   if(!data){toast('⚠ Informe a data','#c0392b');return;}
   const qtd=parseInt(document.getElementById('f-qtd').value)||0;
   if(!qtd){toast('⚠ Informe a quantidade','#c0392b');return;}
   try{
     await addDoc(col,{data,nome:document.getElementById('f-nome').value,mi:document.getElementById('f-mi').value,escala:document.getElementById('f-escala').value,tipo:document.getElementById('f-tipo').value,solicitante:document.getElementById('f-solicitante').value,responsavel:document.getElementById('f-responsavel').value,secao:document.getElementById('f-secao').value,qtd,tamanho:document.getElementById('f-tamanho').value,tamCustom:document.getElementById('f-tam-custom').value,projeto:document.getElementById('f-projeto').value,papel:document.getElementById('f-papel').value,finalidade:document.getElementById('f-finalidade').value,criadoEm:new Date().toISOString()});
-    toast('✔ Impressão salva!','#0a6b4a'); window.limparForm();
+    toast('✔ Impressão salva!','#0a6b4a');window.limparForm();
   }catch(e){toast('❌ Erro ao salvar','#c0392b');}
 }
-
-window.limparForm = function(){
+window.limparForm=function(){
   ['f-nome','f-mi','f-solicitante','f-responsavel','f-secao','f-finalidade','f-tam-custom'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('f-qtd').value=1;
   document.getElementById('f-data').value=new Date().toISOString().slice(0,10);
 }
-
-window.deletar = async function(id){
-  if(!confirm('Remover este registro?')) return;
+window.deletar=async function(id){
+  if(!confirm('Remover este registro?'))return;
   try{await deleteDoc(doc(db,'impressoes',id));toast('Registro removido');}
   catch(e){toast('❌ Erro ao remover','#c0392b');}
 }
-
-window.abrirEdicao = function(id){
-  const d = dados.find(x=>x.id===id);
-  if(!d) return;
-  editandoId = id;
+window.abrirEdicao=function(id){
+  const d=dados.find(x=>x.id===id);if(!d)return;
+  editandoId=id;
   document.getElementById('e-data').value=d.data||'';
   document.getElementById('e-nome').value=d.nome||'';
   document.getElementById('e-mi').value=d.mi||'';
@@ -399,22 +570,15 @@ window.abrirEdicao = function(id){
   document.getElementById('e-finalidade').value=d.finalidade||'';
   document.getElementById('modal-overlay').classList.add('active');
 }
-
-window.fecharModal = function(){
-  document.getElementById('modal-overlay').classList.remove('active');
-  editandoId = null;
-}
-
-window.salvarEdicao = async function(){
-  if(!editandoId) return;
+window.fecharModal=function(){document.getElementById('modal-overlay').classList.remove('active');editandoId=null;}
+window.salvarEdicao=async function(){
+  if(!editandoId)return;
   const data=document.getElementById('e-data').value;
   if(!data){toast('⚠ Informe a data','#c0392b');return;}
   const qtd=parseInt(document.getElementById('e-qtd').value)||0;
-  if(!qtd){toast('⚠ Informe a quantidade','#c0392b');return;}
   try{
     await updateDoc(doc(db,'impressoes',editandoId),{data,nome:document.getElementById('e-nome').value,mi:document.getElementById('e-mi').value,escala:document.getElementById('e-escala').value,tipo:document.getElementById('e-tipo').value,solicitante:document.getElementById('e-solicitante').value,responsavel:document.getElementById('e-responsavel').value,secao:document.getElementById('e-secao').value,qtd,tamanho:document.getElementById('e-tamanho').value,tamCustom:document.getElementById('e-tam-custom').value,projeto:document.getElementById('e-projeto').value,papel:document.getElementById('e-papel').value,finalidade:document.getElementById('e-finalidade').value});
-    toast('✔ Registro atualizado!','#0a6b4a');
-    window.fecharModal();
+    toast('✔ Registro atualizado!','#0a6b4a');window.fecharModal();
   }catch(e){toast('❌ Erro ao salvar','#c0392b');}
 }
 
@@ -426,9 +590,9 @@ function renderHistorico(){
   const proj=document.getElementById('hist-projeto').value;
   const busca=document.getElementById('hist-busca').value.toLowerCase();
   let reg=filtrar(ano,mes);
-  if(tipo) reg=reg.filter(d=>d.tipo===tipo);
-  if(proj) reg=reg.filter(d=>d.projeto===proj);
-  if(busca) reg=reg.filter(d=>[d.nome,d.mi,d.solicitante,d.responsavel,d.secao,d.finalidade].join(' ').toLowerCase().includes(busca));
+  if(tipo)reg=reg.filter(d=>d.tipo===tipo);
+  if(proj)reg=reg.filter(d=>d.projeto===proj);
+  if(busca)reg=reg.filter(d=>[d.nome,d.mi,d.solicitante,d.responsavel,d.secao,d.finalidade].join(' ').toLowerCase().includes(busca));
   reg=reg.slice().sort((a,b)=>b.data.localeCompare(a.data));
   if(!reg.length){document.getElementById('tabela-historico').innerHTML='<div class="empty">Nenhum registro encontrado.</div>';return;}
   const total=reg.reduce((s,d)=>s+(d.qtd||0),0);
@@ -451,11 +615,9 @@ function renderHistorico(){
       </tr>`).join('')}</tbody>
     </table></div>`;
 }
-window.renderHistorico = renderHistorico;
+window.renderHistorico=renderHistorico;
 
-function tbl(rows,total){
-  return`<table><thead><tr><th>Descrição</th><th style="text-align:right">Qtd</th><th style="text-align:right">%</th></tr></thead><tbody>${rows.map(([k,v])=>`<tr><td>${k||'—'}</td><td style="text-align:right;font-weight:600">${v}</td><td style="text-align:right;color:#aaa">${total?Math.round(v/total*100):0}%</td></tr>`).join('')}</tbody></table>`;
-}
+function tbl(rows,total){return`<table><thead><tr><th>Descrição</th><th style="text-align:right">Qtd</th><th style="text-align:right">%</th></tr></thead><tbody>${rows.map(([k,v])=>`<tr><td>${k||'—'}</td><td style="text-align:right;font-weight:600">${v}</td><td style="text-align:right;color:#aaa">${total?Math.round(v/total*100):0}%</td></tr>`).join('')}</tbody></table>`;}
 
 function montarBalanco(reg,titulo,ano,mostrarEvolucao){
   const total=reg.reduce((s,d)=>s+(d.qtd||0),0);
@@ -485,35 +647,14 @@ function montarBalanco(reg,titulo,ano,mostrarEvolucao){
       </tbody></table></div>`:''}`;
 }
 
-function renderBalancoMensal(){
-  popularSelects();
-  const ano=document.getElementById('bal-ano-m').value;
-  const mes=document.getElementById('bal-mes-m').value;
-  const reg=filtrar(ano,mes);
-  const titulo=mes?`${MESES[parseInt(mes)-1]} ${ano}`:`Ano ${ano}`;
-  document.getElementById('balanco-content-mensal').innerHTML=montarBalanco(reg,titulo,ano,!mes);
-}
-window.renderBalancoMensal = renderBalancoMensal;
+function renderBalancoMensal(){popularSelects();const ano=document.getElementById('bal-ano-m').value;const mes=document.getElementById('bal-mes-m').value;const reg=filtrar(ano,mes);const titulo=mes?`${MESES[parseInt(mes)-1]} ${ano}`:`Ano ${ano}`;document.getElementById('balanco-content-mensal').innerHTML=montarBalanco(reg,titulo,ano,!mes);}
+window.renderBalancoMensal=renderBalancoMensal;
+function renderBalancoAnual(){popularSelects();const ano=document.getElementById('bal-ano-a').value;const reg=filtrar(ano,'');document.getElementById('balanco-content-anual').innerHTML=montarBalanco(reg,`Ano ${ano}`,ano,true);}
+window.renderBalancoAnual=renderBalancoAnual;
+function renderBalancoPeriodo(){const de=document.getElementById('bal-de').value;const ate=document.getElementById('bal-ate').value;if(!de||!ate){document.getElementById('balanco-content-periodo').innerHTML='<div class="empty">Selecione as datas de início e fim.</div>';return;}const reg=dados.filter(d=>d.data&&d.data>=de&&d.data<=ate);const fmt=d=>d.split('-').reverse().join('/');document.getElementById('balanco-content-periodo').innerHTML=montarBalanco(reg,`${fmt(de)} a ${fmt(ate)}`,null,false);}
+window.renderBalancoPeriodo=renderBalancoPeriodo;
 
-function renderBalancoAnual(){
-  popularSelects();
-  const ano=document.getElementById('bal-ano-a').value;
-  const reg=filtrar(ano,'');
-  document.getElementById('balanco-content-anual').innerHTML=montarBalanco(reg,`Ano ${ano}`,ano,true);
-}
-window.renderBalancoAnual = renderBalancoAnual;
-
-function renderBalancoPeriodo(){
-  const de=document.getElementById('bal-de').value;
-  const ate=document.getElementById('bal-ate').value;
-  if(!de||!ate){document.getElementById('balanco-content-periodo').innerHTML='<div class="empty">Selecione as datas de início e fim.</div>';return;}
-  const reg=dados.filter(d=>d.data&&d.data>=de&&d.data<=ate);
-  const fmt=d=>d.split('-').reverse().join('/');
-  document.getElementById('balanco-content-periodo').innerHTML=montarBalanco(reg,`${fmt(de)} a ${fmt(ate)}`,null,false);
-}
-window.renderBalancoPeriodo = renderBalancoPeriodo;
-
-window.exportarCSV = function(modo){
+window.exportarCSV=function(modo){
   let reg=[],titulo='';
   if(modo==='mensal'){const ano=document.getElementById('bal-ano-m').value;const mes=document.getElementById('bal-mes-m').value;reg=filtrar(ano,mes);titulo=mes?`${MESES[parseInt(mes)-1]}_${ano}`:`Ano_${ano}`;}
   else if(modo==='anual'){const ano=document.getElementById('bal-ano-a').value;reg=filtrar(ano,'');titulo=`Ano_${ano}`;}
@@ -526,6 +667,139 @@ window.exportarCSV = function(modo){
   const url=URL.createObjectURL(blob);const a=document.createElement('a');
   a.href=url;a.download=`balanco_${titulo}.csv`;a.click();URL.revokeObjectURL(url);
   toast('✔ Exportado!','#0a6b4a');
+}
+
+// ========= INSUMOS =========
+function getQtd(id){ return estoqueData[id]||0; }
+function corQtd(qtd){ return qtd===0?'baixo':qtd<=3?'medio':'ok'; }
+
+function renderInsumos(){
+  popularSelects();
+  // PLOTTERS
+  document.getElementById('plotter-grid').innerHTML=PLOTTERS.map(p=>{
+    const pd=plotterData[p.id]||{status:'ok',obs:''};
+    const statusLabel=pd.status==='ok'?'Funcionando':pd.status==='manutencao'?'Em manutenção':'Inativa';
+    const dotClass=pd.status==='ok'?'dot-ok':pd.status==='manutencao'?'dot-manut':'dot-inativa';
+    const badgeClass=pd.status==='ok'?'badge-ok':pd.status==='manutencao'?'badge-manut':'badge-inativa';
+    return`<div class="plotter-card">
+      <div class="plotter-nome">${p.nome}</div>
+      <div class="plotter-modelo">${p.modelo}</div>
+      <div class="plotter-status"><span class="status-dot ${dotClass}"></span><span class="badge ${badgeClass}">${statusLabel}</span></div>
+      ${pd.obs?`<div style="font-size:11px;color:#888;margin-bottom:12px">${pd.obs}</div>`:''}
+      <button class="btn btn-sm" onclick="window.abrirModalPlotter('${p.id}','${p.nome}')">✏️ Alterar status</button>
+    </div>`;
+  }).join('');
+
+  // PAPÉIS
+  function renderPapeis(lista, containerId){
+    document.getElementById(containerId).innerHTML=lista.map(p=>{
+      const qtd=getQtd(p.id);
+      return`<div class="insumo-row">
+        <span class="insumo-nome">${p.nome}</span>
+        <span class="insumo-qtd ${corQtd(qtd)}">${qtd}</span>
+        <div class="insumo-btns">
+          <button class="btn-entry" onclick="window.abrirMovimentacao('${p.id}','${p.nome}','entrada')">+</button>
+          <button class="btn-exit" onclick="window.abrirMovimentacao('${p.id}','${p.nome}','saida')">−</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+  renderPapeis(PAPEIS_DGEO,'papeis-dgeo');
+  renderPapeis(PAPEIS_ALMO,'papeis-almo');
+
+  // TINTAS
+  function renderTintas(lista, containerId){
+    document.getElementById(containerId).innerHTML=lista.map(t=>{
+      const qtd=getQtd(t.id);
+      return`<div class="insumo-row">
+        <span style="width:12px;height:12px;border-radius:50%;background:${t.cor};display:inline-block;margin-right:6px;flex-shrink:0"></span>
+        <span class="insumo-nome">${t.nome}</span>
+        <span class="insumo-qtd ${corQtd(qtd)}">${qtd}</span>
+        <div class="insumo-btns">
+          <button class="btn-entry" onclick="window.abrirMovimentacao('${t.id}','${t.nome}','entrada')">+</button>
+          <button class="btn-exit" onclick="window.abrirMovimentacao('${t.id}','${t.nome}','saida')">−</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+  renderTintas(TINTAS_DGEO,'tintas-dgeo');
+  renderTintas(TINTAS_ALMO,'tintas-almo');
+
+  renderConsumo();
+}
+
+function renderConsumo(){
+  popularSelects();
+  const ano=document.getElementById('cons-ano').value;
+  const mes=document.getElementById('cons-mes').value;
+  let movs=movimentacoes.filter(m=>{
+    if(!m.data)return false;
+    return(!ano||m.data.slice(0,4)===ano)&&(!mes||parseInt(m.data.slice(5,7))===parseInt(mes));
+  });
+  if(!movs.length){document.getElementById('consumo-lista').innerHTML='<div class="empty">Nenhuma movimentação no período.</div>';return;}
+  document.getElementById('consumo-lista').innerHTML=`<table>
+    <thead><tr><th>Data</th><th>Insumo</th><th>Tipo</th><th>Qtd</th><th>Observação</th></tr></thead>
+    <tbody>${movs.map(m=>`<tr>
+      <td>${m.data.split('-').reverse().join('/')}</td>
+      <td>${m.nome||'—'}</td>
+      <td><span class="badge ${m.tipo==='entrada'?'badge-ok':'badge-inativa'}">${m.tipo==='entrada'?'Entrada':'Saída'}</span></td>
+      <td><strong>${m.qtd}</strong></td>
+      <td style="color:#888">${m.obs||'—'}</td>
+    </tr>`).join('')}</tbody>
+  </table>`;
+}
+window.renderConsumo=renderConsumo;
+
+window.abrirMovimentacao=function(id,nome,tipo){
+  movInsumoId=id;
+  document.getElementById('modal-insumo-title').textContent=(tipo==='entrada'?'➕ Entrada':'➖ Saída')+' — '+nome;
+  document.getElementById('mov-tipo').value=tipo;
+  document.getElementById('mov-qtd').value=1;
+  document.getElementById('mov-data').value=new Date().toISOString().slice(0,10);
+  document.getElementById('mov-obs').value='';
+  document.getElementById('modal-insumo').classList.add('active');
+}
+window.fecharModalInsumo=function(){document.getElementById('modal-insumo').classList.remove('active');movInsumoId=null;}
+
+window.salvarMovimentacao=async function(){
+  if(!movInsumoId)return;
+  const tipo=document.getElementById('mov-tipo').value;
+  const qtd=parseInt(document.getElementById('mov-qtd').value)||0;
+  if(!qtd){toast('⚠ Informe a quantidade','#c0392b');return;}
+  const data=document.getElementById('mov-data').value;
+  const obs=document.getElementById('mov-obs').value;
+  // Atualizar estoque
+  const atual=getQtd(movInsumoId);
+  const novo=tipo==='entrada'?atual+qtd:Math.max(0,atual-qtd);
+  estoqueData[movInsumoId]=novo;
+  try{
+    await salvarEstoque();
+    const nomeInsumo=document.getElementById('modal-insumo-title').textContent.split(' — ')[1];
+    await addDoc(colMov,{insumoId:movInsumoId,nome:nomeInsumo,tipo,qtd,data,obs,criadoEm:new Date().toISOString()});
+    toast(tipo==='entrada'?'✔ Entrada registrada!':'✔ Saída registrada!','#0a6b4a');
+    window.fecharModalInsumo();
+    renderInsumos();
+  }catch(e){toast('❌ Erro ao salvar','#c0392b');}
+}
+
+window.abrirModalPlotter=function(id,nome){
+  plotterEditId=id;
+  const pd=plotterData[id]||{status:'ok',obs:''};
+  document.getElementById('modal-plotter-title').textContent='✏️ Alterar status — '+nome;
+  document.getElementById('plt-status').value=pd.status||'ok';
+  document.getElementById('plt-obs').value=pd.obs||'';
+  document.getElementById('modal-plotter').classList.add('active');
+}
+window.fecharModalPlotter=function(){document.getElementById('modal-plotter').classList.remove('active');plotterEditId=null;}
+window.salvarStatusPlotter=async function(){
+  if(!plotterEditId)return;
+  plotterData[plotterEditId]={status:document.getElementById('plt-status').value,obs:document.getElementById('plt-obs').value};
+  try{
+    await salvarPlotters();
+    toast('✔ Status atualizado!','#0a6b4a');
+    window.fecharModalPlotter();
+    renderInsumos();
+  }catch(e){toast('❌ Erro ao salvar','#c0392b');}
 }
 
 document.getElementById('f-data').value=new Date().toISOString().slice(0,10);
