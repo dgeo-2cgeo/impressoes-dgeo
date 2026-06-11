@@ -255,6 +255,10 @@ tr:hover td{background:#f8f8fc}
       <div id="tintas-b-almo"></div>
     </div>
   </div>
+  <div class="insumo-card" style="margin-bottom:20px">
+    <div class="insumo-header"><span>Tipo B — Total Geral (DGEO + Almoxarifado)</span></div>
+    <div id="tintas-b-total"></div>
+  </div>
 
   <!-- TINTAS TIPO P -->
   <div class="section-title">🎨 Cartuchos Tipo P — HP T2600DR (P2VxxA)</div>
@@ -267,6 +271,10 @@ tr:hover td{background:#f8f8fc}
       <div class="insumo-header"><span>Tipo P — Disponível no Almoxarifado</span></div>
       <div id="tintas-p-almo"></div>
     </div>
+  </div>
+  <div class="insumo-card" style="margin-bottom:20px">
+    <div class="insumo-header"><span>Tipo P — Total Geral (DGEO + Almoxarifado)</span></div>
+    <div id="tintas-p-total"></div>
   </div>
 
   <!-- CONSUMO MENSAL -->
@@ -755,6 +763,36 @@ function renderInsumos(){
   renderTintas(TINTAS_B_ALMO,'tintas-b-almo');
   renderTintas(TINTAS_P_DGEO,'tintas-p-dgeo');
   renderTintas(TINTAS_P_ALMO,'tintas-p-almo');
+
+  // TOTAIS
+  function renderTotal(listaDgeo, listaAlmo, containerId){
+    const cores = listaDgeo.map((t,i)=>({
+      nome: t.nome, cor: t.cor,
+      dgeo: getQtd(t.id),
+      almo: getQtd(listaAlmo[i].id),
+      total: getQtd(t.id) + getQtd(listaAlmo[i].id)
+    }));
+    document.getElementById(containerId).innerHTML = `
+      <table style="width:100%">
+        <thead><tr>
+          <th style="padding:8px 16px;font-size:11px;color:#888;font-weight:600;text-transform:uppercase;border-bottom:1px solid #eee;background:#fafafa">Cor</th>
+          <th style="padding:8px 16px;font-size:11px;color:#888;font-weight:600;text-transform:uppercase;border-bottom:1px solid #eee;background:#fafafa;text-align:center">DGEO</th>
+          <th style="padding:8px 16px;font-size:11px;color:#888;font-weight:600;text-transform:uppercase;border-bottom:1px solid #eee;background:#fafafa;text-align:center">Almoxarifado</th>
+          <th style="padding:8px 16px;font-size:11px;color:#3c3a8e;font-weight:700;text-transform:uppercase;border-bottom:1px solid #eee;background:#fafafa;text-align:center">Total Geral</th>
+        </tr></thead>
+        <tbody>${cores.map(c=>`<tr>
+          <td style="padding:8px 16px;border-bottom:1px solid #f5f5f8">
+            <span style="width:12px;height:12px;border-radius:50%;background:${c.cor};display:inline-block;margin-right:8px;vertical-align:middle"></span>
+            <span style="font-size:13px;font-weight:500">${c.nome}</span>
+          </td>
+          <td style="padding:8px 16px;border-bottom:1px solid #f5f5f8;text-align:center;font-size:14px;font-weight:600;color:${c.dgeo===0?'#c0392b':c.dgeo<=3?'#e67e22':'#0a6b4a'}">${c.dgeo}</td>
+          <td style="padding:8px 16px;border-bottom:1px solid #f5f5f8;text-align:center;font-size:14px;font-weight:600;color:${c.almo===0?'#c0392b':c.almo<=3?'#e67e22':'#0a6b4a'}">${c.almo}</td>
+          <td style="padding:8px 16px;border-bottom:1px solid #f5f5f8;text-align:center;font-size:18px;font-weight:700;color:#3c3a8e">${c.total}</td>
+        </tr>`).join('')}</tbody>
+      </table>`;
+  }
+  renderTotal(TINTAS_B_DGEO, TINTAS_B_ALMO, 'tintas-b-total');
+  renderTotal(TINTAS_P_DGEO, TINTAS_P_ALMO, 'tintas-p-total');
 
   renderConsumo();
 }
