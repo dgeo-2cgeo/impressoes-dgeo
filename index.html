@@ -243,19 +243,6 @@ tr:hover td{background:#f8f8fc}
     </div>
   </div>
 
-  <!-- TINTAS GENÉRICAS -->
-  <div class="section-title">🎨 Cartuchos Genéricos — Compatível com T930, T2530 e T2600DR</div>
-  <div class="insumos-grid">
-    <div class="insumo-card">
-      <div class="insumo-header"><span>Genéricos — Disponível na DGEO</span></div>
-      <div id="tintas-gen-dgeo"></div>
-    </div>
-    <div class="insumo-card">
-      <div class="insumo-header"><span>Genéricos — Disponível no Almoxarifado</span></div>
-      <div id="tintas-gen-almo"></div>
-    </div>
-  </div>
-
   <!-- TINTAS TIPO B -->
   <div class="section-title">🎨 Cartuchos Tipo B — HP T930 / T2530 (B3PxxA)</div>
   <div class="insumos-grid">
@@ -269,7 +256,7 @@ tr:hover td{background:#f8f8fc}
     </div>
   </div>
   <div class="insumo-card" style="margin-bottom:20px">
-    <div class="insumo-header"><span>Tipo B — Total Geral (DGEO + Almoxarifado + Genéricos)</span></div>
+    <div class="insumo-header"><span>Tipo B — Total Geral (DGEO + Almoxarifado)</span></div>
     <div id="tintas-b-total"></div>
   </div>
 
@@ -286,7 +273,7 @@ tr:hover td{background:#f8f8fc}
     </div>
   </div>
   <div class="insumo-card" style="margin-bottom:20px">
-    <div class="insumo-header"><span>Tipo P — Total Geral (DGEO + Almoxarifado + Genéricos)</span></div>
+    <div class="insumo-header"><span>Tipo P — Total Geral (DGEO + Almoxarifado)</span></div>
     <div id="tintas-p-total"></div>
   </div>
 
@@ -423,22 +410,7 @@ const PAPEIS_ALMO = [
   {id:'p_comum_almo', nome:'Comum (61x30m)', local:'almo'},
   {id:'p_sulfite_almo', nome:'Sulfite/Comum 90g (914x50m)', local:'almo'},
 ];
-const TINTAS_GEN_DGEO = [
-  {id:'tg_mb_dgeo', nome:'Matte Black (Genérico)', cor:'#333'},
-  {id:'tg_pb_dgeo', nome:'Photo Black (Genérico)', cor:'#111'},
-  {id:'tg_gr_dgeo', nome:'Gray (Genérico)', cor:'#888'},
-  {id:'tg_ye_dgeo', nome:'Yellow (Genérico)', cor:'#e6b800'},
-  {id:'tg_cy_dgeo', nome:'Cyan (Genérico)', cor:'#00a8cc'},
-  {id:'tg_ma_dgeo', nome:'Magenta (Genérico)', cor:'#cc0066'},
-];
-const TINTAS_GEN_ALMO = [
-  {id:'tg_mb_almo', nome:'Matte Black (Genérico)', cor:'#333'},
-  {id:'tg_pb_almo', nome:'Photo Black (Genérico)', cor:'#111'},
-  {id:'tg_gr_almo', nome:'Gray (Genérico)', cor:'#888'},
-  {id:'tg_ye_almo', nome:'Yellow (Genérico)', cor:'#e6b800'},
-  {id:'tg_cy_almo', nome:'Cyan (Genérico)', cor:'#00a8cc'},
-  {id:'tg_ma_almo', nome:'Magenta (Genérico)', cor:'#cc0066'},
-];
+const TINTAS_B_DGEO = [
   {id:'tb_mb_dgeo', nome:'Matte Black (B3P22A)', cor:'#333'},
   {id:'tb_pb_dgeo', nome:'Photo Black (B3P23A)', cor:'#111'},
   {id:'tb_gr_dgeo', nome:'Gray (B3P24A)', cor:'#888'},
@@ -787,32 +759,26 @@ function renderInsumos(){
       </div>`;
     }).join('');
   }
-  renderTintas(TINTAS_GEN_DGEO,'tintas-gen-dgeo');
-  renderTintas(TINTAS_GEN_ALMO,'tintas-gen-almo');
   renderTintas(TINTAS_B_DGEO,'tintas-b-dgeo');
   renderTintas(TINTAS_B_ALMO,'tintas-b-almo');
   renderTintas(TINTAS_P_DGEO,'tintas-p-dgeo');
   renderTintas(TINTAS_P_ALMO,'tintas-p-almo');
 
-  // TOTAIS (B e P somam os genéricos)
+  // TOTAIS
   function renderTotal(listaDgeo, listaAlmo, containerId){
     const cores = listaDgeo.map((t,i)=>({
-      nome: t.nome.replace(' (Genérico)',''), cor: t.cor,
+      nome: t.nome, cor: t.cor,
       dgeo: getQtd(t.id),
       almo: getQtd(listaAlmo[i].id),
-      genDgeo: getQtd(TINTAS_GEN_DGEO[i].id),
-      genAlmo: getQtd(TINTAS_GEN_ALMO[i].id),
-      get total(){ return this.dgeo + this.almo + this.genDgeo + this.genAlmo; }
+      total: getQtd(t.id) + getQtd(listaAlmo[i].id)
     }));
     document.getElementById(containerId).innerHTML = `
       <table style="width:100%">
         <thead><tr>
           <th style="padding:8px 16px;font-size:11px;color:#888;font-weight:600;text-transform:uppercase;border-bottom:1px solid #eee;background:#fafafa">Cor</th>
-          <th style="padding:8px 16px;font-size:11px;color:#888;font-weight:600;text-transform:uppercase;border-bottom:1px solid #eee;background:#fafafa;text-align:center">Específico DGEO</th>
-          <th style="padding:8px 16px;font-size:11px;color:#888;font-weight:600;text-transform:uppercase;border-bottom:1px solid #eee;background:#fafafa;text-align:center">Específico Almo</th>
-          <th style="padding:8px 16px;font-size:11px;color:#888;font-weight:600;text-transform:uppercase;border-bottom:1px solid #eee;background:#fafafa;text-align:center">Genérico DGEO</th>
-          <th style="padding:8px 16px;font-size:11px;color:#888;font-weight:600;text-transform:uppercase;border-bottom:1px solid #eee;background:#fafafa;text-align:center">Genérico Almo</th>
-          <th style="padding:8px 16px;font-size:11px;color:#3c3a8e;font-weight:700;text-transform:uppercase;border-bottom:1px solid #eee;background:#eeedfb;text-align:center">Total Geral</th>
+          <th style="padding:8px 16px;font-size:11px;color:#888;font-weight:600;text-transform:uppercase;border-bottom:1px solid #eee;background:#fafafa;text-align:center">DGEO</th>
+          <th style="padding:8px 16px;font-size:11px;color:#888;font-weight:600;text-transform:uppercase;border-bottom:1px solid #eee;background:#fafafa;text-align:center">Almoxarifado</th>
+          <th style="padding:8px 16px;font-size:11px;color:#3c3a8e;font-weight:700;text-transform:uppercase;border-bottom:1px solid #eee;background:#fafafa;text-align:center">Total Geral</th>
         </tr></thead>
         <tbody>${cores.map(c=>`<tr>
           <td style="padding:8px 16px;border-bottom:1px solid #f5f5f8">
@@ -821,9 +787,7 @@ function renderInsumos(){
           </td>
           <td style="padding:8px 16px;border-bottom:1px solid #f5f5f8;text-align:center;font-size:14px;font-weight:600;color:${c.dgeo===0?'#c0392b':c.dgeo<=3?'#e67e22':'#0a6b4a'}">${c.dgeo}</td>
           <td style="padding:8px 16px;border-bottom:1px solid #f5f5f8;text-align:center;font-size:14px;font-weight:600;color:${c.almo===0?'#c0392b':c.almo<=3?'#e67e22':'#0a6b4a'}">${c.almo}</td>
-          <td style="padding:8px 16px;border-bottom:1px solid #f5f5f8;text-align:center;font-size:14px;font-weight:600;color:${c.genDgeo===0?'#c0392b':c.genDgeo<=3?'#e67e22':'#0a6b4a'}">${c.genDgeo}</td>
-          <td style="padding:8px 16px;border-bottom:1px solid #f5f5f8;text-align:center;font-size:14px;font-weight:600;color:${c.genAlmo===0?'#c0392b':c.genAlmo<=3?'#e67e22':'#0a6b4a'}">${c.genAlmo}</td>
-          <td style="padding:8px 16px;border-bottom:1px solid #f5f5f8;text-align:center;font-size:20px;font-weight:700;color:#3c3a8e;background:#f5f5fd">${c.total}</td>
+          <td style="padding:8px 16px;border-bottom:1px solid #f5f5f8;text-align:center;font-size:18px;font-weight:700;color:#3c3a8e">${c.total}</td>
         </tr>`).join('')}</tbody>
       </table>`;
   }
